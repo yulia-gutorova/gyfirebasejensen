@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "56928710733",
+    "project_id": "gyfirebasejensen",
+    "storage_bucket": "gyfirebasejensen.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56928710733:android:1e4f462b6c02811ea3ac04",
+        "android_client_info": {
+          "package_name": "com.gyfirebasejensen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56928710733-u8m46bjm82kbnc6nc9916ql52so9u28n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gyfirebasejensen",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "56928710733-imb7g6kdt3684om6n24fe9k2avqqfrcg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwtBgBL902qNFekXAGVv4QGLJnYpcU3u0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56928710733-imb7g6kdt3684om6n24fe9k2avqqfrcg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
