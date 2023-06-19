@@ -8,7 +8,7 @@ import {
     ScrollView,
     SafeAreaView,
     Button,
-    KeyboardAvoidingView, 
+    KeyboardAvoidingView,
     Image
 } from "react-native"
 
@@ -22,7 +22,7 @@ const reference = storage();
 //---------------------------------------------------------
 const AddNewItemForm = ({ onSubmit }) => {
 
-    const [image, setImage] = useState({                                
+    const [image, setImage] = useState({
         imageName: "",
         imageUrl: null,
     });
@@ -37,7 +37,7 @@ const AddNewItemForm = ({ onSubmit }) => {
         image: "",
     });
 
-    const types = ["Sewing", "Knitting", "Crochet", "Embroidery" , "Felting"];
+    const types = ["Sewing", "Knitting", "Crochet", "Embroidery", "Felting"];
 
     const addNewImageHander = async () => {
         console.log('Add Image');
@@ -49,7 +49,8 @@ const AddNewItemForm = ({ onSubmit }) => {
                     includeBase64: false,
                 },
 
-                async response => {
+                async response => 
+                {
                     if (response.didCancel) {
                         console.log('User cancelled image picker');
                     } else if (response.errorCode) {
@@ -63,17 +64,14 @@ const AddNewItemForm = ({ onSubmit }) => {
                         console.log('Uri is', fileUri);
 
                         const randomNumber = Math.floor(Math.random() * 100) + 1;
-                        const imagePath =
-                            'images/image-' + randomNumber * randomNumber;
+                        const imagePath = 'images/image-' + randomNumber * randomNumber;
 
                         await reference
                             .ref(imagePath)
                             .putFile(fileUri)
                             .then(async result => {
                                 console.log('added image');
-                                const url = await reference
-                                    .ref(imagePath)
-                                    .getDownloadURL();
+                                const url = await reference.ref(imagePath).getDownloadURL();
                                 console.log('Image path:', imagePath);
                                 console.log('Image Url is', url);
 
@@ -84,7 +82,6 @@ const AddNewItemForm = ({ onSubmit }) => {
                                 };
 
                                 setImage(itemData);
-
                                 setForm({
                                     ...form,
                                     image: url
@@ -96,14 +93,14 @@ const AddNewItemForm = ({ onSubmit }) => {
             );
     }
 
-    const Item = ({ item }) => {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.imageName}>{item.imageName}</Text>
-            <Image style={styles.image} source={{ uri: item.imageUrl }} />
-        </View>
-    );
-    }; 
+    const ImageItem = ({ item }) => {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.imageName}>{item.imageName}</Text>
+                {item.imageUrl === "" ? <Image style={styles.image} source={{ uri: item.imageUrl }} /> : null}
+            </View>
+        );
+    };
 
     //---------------------------------------------------------
     const onChangeCustomRadioButton = (name, text) => {
@@ -115,15 +112,15 @@ const AddNewItemForm = ({ onSubmit }) => {
     }
 
     //---------------------------------------------------------
-        const onChangeText = (name) => (text) => {
-            setForm({
-                ...form,
-                [name]: text
-            })
-        }
+    const onChangeText = (name) => (text) => {
+        setForm({
+            ...form,
+            [name]: text
+        })
+    }
 
-        console.log("Form in AddNewItemForm");
-        console.log(form);
+    console.log("Form in AddNewItemForm");
+    console.log(form);
 
 
     //=====================================================
@@ -139,17 +136,17 @@ const AddNewItemForm = ({ onSubmit }) => {
 
                 <KeyboardAvoidingView behavior={"padding"}>
 
-                {/* Type custom radio buttons */}
+        {/* Type custom radio buttons */}
                     <View style={styles.miniContainer}>
-                        <Text style={[styles.paragraph, {fontWeight:"bold"}]}>Choose type: </Text>
+                        <Text style={[styles.paragraph, { fontWeight: "bold" }]}>Choose type: </Text>
                         <CustomRadioButton data={types} onSelect={(value) => onChangeCustomRadioButton("type", value)} />
                     </View>
 
-                {/* Add Image */}
-                <View style={[styles.miniContainer]}>
-                        <Text style={{fontWeight:"bold", marginLeft: 10}}>image: </Text>
+        {/* Add Image */}
+                    <View style={[styles.miniContainer]}>
+                        <Text style={{ fontWeight: "bold", marginLeft: 10 }}>image: </Text>
                         <View contentInsetAdjustmentBehavior="automatic" style={[styles.imageContainer]}>
-                            <Item key={image.imageName} item={image}/>
+                            <ImageItem key={image.imageName} item={image} />
                             <Button
                                 title="Add Image"
                                 onPress={addNewImageHander}
@@ -157,24 +154,24 @@ const AddNewItemForm = ({ onSubmit }) => {
                         </View>
                     </View>
 
-                {/* Name text field */}
-                    <Text style={{fontWeight:"bold", marginLeft: 10}}>Name: </Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={onChangeText("name")}
-                            value={form.name}
+        {/* Name text field */}
+                    <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Name: </Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangeText("name")}
+                        value={form.name}
                     />
 
-                {/* Description text field */}
-                    <Text style={{fontWeight:"bold", marginLeft: 10}}>Description: </Text>
-                        <TextInput
-                            multiline={true}
-                            style={[styles.input, {minHeight: 50}]}
-                            onChangeText={onChangeText("description")}
-                            value={form.description}
+        {/* Description text field */}
+                    <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Description: </Text>
+                    <TextInput
+                        multiline={true}
+                        style={[styles.input, { minHeight: 50 }]}
+                        onChangeText={onChangeText("description")}
+                        value={form.description}
                     />
 
-                {/* Submit button */}
+        {/* Submit button */}
                     <Pressable
                         style={styles.btnPressMe}
                         onPress={() => onSubmit(form)}>
@@ -183,9 +180,7 @@ const AddNewItemForm = ({ onSubmit }) => {
 
                 </KeyboardAvoidingView>
             </ScrollView>
-
         </View>
-
     )
 }
 

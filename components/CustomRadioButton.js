@@ -25,7 +25,7 @@ export default function CustomRadioButton({ data, option, onSelect }) {
         return (
           <Pressable  key={item} style={[styles.pressable, item === userOption ? styles.selected : styles.unselected]} 
                       onPress={() => selectHandler(item)}> 
-            <Text style={styles.option}> {item}</Text>
+                      <Text style={styles.option}> {item}</Text>
           </Pressable>
         )
       })}

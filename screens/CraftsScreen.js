@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useCallback} from "react"
+import { useState, useCallback } from "react"
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import {
@@ -17,7 +17,7 @@ import OneItem from '../components/OneItem';
 import axios from 'axios';
 
 
-const CraftsScreen = ({navigation, route}) => {
+const CraftsScreen = ({ navigation, route }) => {
 
     let type = route.params.type;
     const [crafts, setCrafts] = useState([]);
@@ -32,76 +32,74 @@ const CraftsScreen = ({navigation, route}) => {
         useCallback((type) => {
             console.log("inside useFocusEffect");
             console.log("Type outside");
-            console.log(type);  
-        const getAllCrafts = async (type) => 
-        {
-            console.log("In get all crafts function");
-            const resp = await axios.get('https://hobby-app-server-production.up.railway.app/crafts')
-            .then(resp => {       
+            console.log(type);
+            const getAllCrafts = async (type) => {
+                console.log("In get all crafts function");
+                const resp = await axios.get('https://hobby-app-server-production.up.railway.app/crafts')
+                    .then(resp => {
                         console.log("Responce");
-                            console.log(resp.data);
-                            setCrafts(resp.data); 
-                            })
+                        console.log(resp.data);
+                        setCrafts(resp.data);
+                    })
 
-            .catch((error) => console.log('Error: ', error));
-        };  
-        getAllCrafts(type);
+                    .catch((error) => console.log('Error: ', error));
+            };
+            getAllCrafts(type);
 
         }, [isFocused])
-  );
+    );
 
 
-  let typeCrafts= crafts.filter(item => item.type === type);
+    let typeCrafts = crafts.filter(item => item.type === type);
 
 
-  console.log("Crafts outside");
-  console.log(crafts);
-  console.log("Type Crafts");
-  console.log(typeCrafts);
+    console.log("Crafts outside");
+    console.log(crafts);
+    console.log("Type Crafts");
+    console.log(typeCrafts);
 
-//=====================================================
-return (  
-    <View style={styles.container}>
-        <View style={styles.titleContainer}>
-            <Text style={styles.text}>{type}</Text>
-        </View>
-        
-        <View style={styles.flatlistContainer}>
+    //=====================================================
+    return (
+        <View style={styles.container}>
 
-            {typeCrafts.length === 0 ? <Text style={styles.text}>You still don't have any  recipes here.</Text> : null}
-            <FlatList
+            <View style={styles.titleContainer}>
+                <Text style={styles.text}>{type}</Text>
+            </View>
+
+            <View style={styles.flatlistContainer}>
+                {typeCrafts.length === 0 ? <Text style={styles.text}>You still don't have any  recipes here.</Text> : null}
+                <FlatList
                     style={styles.flatlist}
                     key={type}
                     keyExtractor={item => item.id}
                     data={typeCrafts}
                     showsVerticalScrollIndicator
-                    renderItem={({ item }) => 
-                    {   
-                        return(<>
-                                    <Pressable  onPress={() => navigation.navigate("CraftDetail", {title: item.name, craft:{item}})}>
-                                        <OneItem key={item.id} title={item.name} craft={{item}}/>       
-                                    </Pressable> 
+                    renderItem={({ item }) => {
+                        return (
+                        <>
+                            <Pressable onPress={() => navigation.navigate("CraftDetail", { title: item.name, craft: { item } })}>
+                                <OneItem key={item.id} title={item.name} craft={{ item }} />
+                            </Pressable>
                         </>
-                        )
-                    }
-                    }
-            />
-        </View>
-        
-        <View style={styles.btnContainer}>
-            <Pressable
-                style={styles.btnPressMe}
-                onPress={() => navigation.push("Home")}>
-                <Text style={styles.btnText}> Home</Text>
-            </Pressable>
-        </View>
+                        )}}
+                />
+            </View>
 
-    </View>
-)
+            <View style={styles.btnContainer}>
+                <Pressable
+                    style={styles.btnPressMe}
+                    onPress={() => navigation.push("Home")}>
+                    <Text style={styles.btnText}> Home</Text>
+                </Pressable>
+            </View>
+
+        </View>
+    )
 }
 
 //-------------- Styles-----------------------------
 const styles = StyleSheet.create({
+    
     container: {
         flex: 1,
         alignItems: 'center',
@@ -127,9 +125,8 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(89, 31, 5, 0.83)",
     },
 
-    flatlistContainer:{
+    flatlistContainer: {
         flex: 0.8,
-        //marginTop: 30,
         backgroundColor: "rgba(0, 0, 0, 0.62)",
         width: "100%",
         alignItems: 'center',
@@ -138,7 +135,7 @@ const styles = StyleSheet.create({
 
     imageContainer: {
         flex: 0.4,
-        width: "100%", 
+        width: "100%",
     },
 
     flatlist: {

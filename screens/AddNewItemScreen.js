@@ -24,7 +24,7 @@ import {
 import axios from "axios"
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import {API_URL} from "@env"
+import { API_URL } from "@env"
 
 //import storage from '@react-native-firebase/storage';
 //import * as ImagePicker from 'react-native-image-picker';
@@ -50,17 +50,15 @@ const AddNewItemScreen = ({ navigation }) => {
     //const [images, setImages] = useState([]);
     const isDarkMode = useColorScheme() === 'dark';
 
-    const handleFormSubmit = (form) => 
-    {
+    const handleFormSubmit = (form) => {
 
         console.log("Inside handleFormSubmit function");
         console.log("Form inside handleFormSubmit function");
         console.log(form);
 
-        const createItem = async (form) => 
-        {
+        const createItem = async (form) => {
 
-            let newItem = 
+            let newItem =
             {
                 type: form.type,
                 name: form.name,
@@ -69,15 +67,15 @@ const AddNewItemScreen = ({ navigation }) => {
                 size: form.size,
                 price: form.price,
                 image: form.image,
-            } 
+            }
 
             console.log(newItem);
             const URL = API_URL;
             console.log("URL:");
             console.log(URL);
             const resp = await axios.post(URL, newItem)
-            .then( navigation.push("Crafts", {type: form.type}))
-            .catch((error) => console.log('Error: ', error));
+                .then(navigation.push("Crafts", { type: form.type }))
+                .catch((error) => console.log('Error: ', error));
         }
 
         createItem(form);
@@ -87,11 +85,11 @@ const AddNewItemScreen = ({ navigation }) => {
 
     //=====================================================
     return (
-        <KeyboardAvoidingView 
+        <KeyboardAvoidingView
             behavior={"height"}
             keyboardVerticalOffset={0}
-            enabled={false} 
-            style={styles.container} >  
+            enabled={false}
+            style={styles.container} >
 
             <View style={styles.titleContainer}>
                 <Text style={styles.text}>Add a new craft</Text>
@@ -109,12 +107,7 @@ const AddNewItemScreen = ({ navigation }) => {
                     <Text style={styles.btnText}>GoHome</Text>
                 </Pressable>
             </View>
-
         </KeyboardAvoidingView>
-
-
-
-
     );
 }
 
@@ -123,15 +116,11 @@ const windowWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //borderRadius: 16,
-        //padding: 10,
         margin: 0,
-        ///width: "100%",
     },
 
     btnContainer: {
         flex: 0.1,
-        //width: "100%",
         backgroundColor: "rgba(108, 56, 32, 0.83)",
         alignItems: 'flex-end',
         justifyContent: 'center',
@@ -139,7 +128,6 @@ const styles = StyleSheet.create({
 
     titleContainer: {
         flex: 0.1,
-        //width: "100%",
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         backgroundColor: "rgba(89, 31, 5, 0.83)",
@@ -151,7 +139,6 @@ const styles = StyleSheet.create({
         flex: 0.8,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        //width: "90%",
     },
 
     imageName: {
@@ -188,7 +175,7 @@ const styles = StyleSheet.create({
         paddingLeft: 100,
         paddingRight: 20,
         backgroundColor: "gray"
-    }, 
+    },
     text: {
         fontSize: 24,
         color: "#daa520",
