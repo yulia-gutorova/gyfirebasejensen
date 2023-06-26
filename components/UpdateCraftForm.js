@@ -20,27 +20,39 @@ import CustomRadioButton from "./CustomRadioButton";
 const reference = storage();
 
 //---------------------------------------------------------
-const AddNewItemForm = ({ onSubmit }) => {
+const UpdateCraftForm = ({ onSubmit, craft}) => {
 
-    const [image, setImage] = useState({
-        imageName: "",
-        imageUrl: null,
-    });
+    console.log("In UpdateCraftForm");
+    console.log("Craft:");
+    console.log(craft);
+
+ 
+    const [imageObj, setImageObj] = useState({
+        imageName: craft.craft.imageObject.imageName,
+        imageUrl: craft.craft.imageObject.imageUrl,
+    }); 
 
     const [form, setForm] = useState({
-        type: "",
-        name: "",
-        description: "",
-        materials: "wool",
-        size: "5",
-        price: "100",
-        image: "",
+        _id: craft.craft._id,
+        type: craft.craft.type,
+        name: craft.craft.name,
+        description: craft.craft.description,
+        materials: craft.craft.materials,
+        size: craft.craft.size,
+        price: craft.craft.price,
+        imageObject: {imageName: craft.craft.imageObject.imageName, imageUrl: craft.craft.imageObject.imageUrl},
+        image: craft.craft.image,
     });
+
+    console.log("Form in UpdateCraftForm");
+    console.log(form);
+
+    
 
     const types = ["Sewing", "Knitting", "Crochet", "Embroidery", "Felting"];
 
     const addNewImageHander = async () => {
-        console.log('Add Image');
+        //console.log('Add Image');
         await ImagePicker.launchImageLibrary
             (
                 {
@@ -61,7 +73,7 @@ const AddNewItemForm = ({ onSubmit }) => {
 
                     else if (response.assets) {
                         const fileUri = response.assets[0]['uri'];
-                        console.log('Uri is', fileUri);
+                        //console.log('Uri is', fileUri);
 
                         const randomNumber = Math.floor(Math.random() * 100) + 1;
                         const imagePath = 'images/image-' + randomNumber * randomNumber;
@@ -70,10 +82,10 @@ const AddNewItemForm = ({ onSubmit }) => {
                             .ref(imagePath)
                             .putFile(fileUri)
                             .then(async result => {
-                                console.log('added image');
+                                //console.log('added image');
                                 const url = await reference.ref(imagePath).getDownloadURL();
-                                console.log('Image path:', imagePath);
-                                console.log('Image Url is', url);
+                                //console.log('Image path:', imagePath);
+                                //console.log('Image Url is', url);
 
                                 const itemData =
                                 {
@@ -81,9 +93,11 @@ const AddNewItemForm = ({ onSubmit }) => {
                                     imageUrl: url,
                                 };
 
-                                setImage(itemData);
+                                setImageObj(itemData);
+
                                 setForm({
                                     ...form,
+                                    imageObject: itemData,
                                     image: url
                                 })
                             });
@@ -95,9 +109,9 @@ const AddNewItemForm = ({ onSubmit }) => {
 
     const ImageItem = ({ item }) => {
         return (
-            <View style={styles.container}>
+            <View style={styles.imageContainer}>
                 <Text style={styles.imageName}>{item.imageName}</Text>
-                {item.imageUrl === "" ? <Image style={styles.image} source={{ uri: item.imageUrl }} /> : null}
+                <Image style={styles.image} source={{ uri: item.imageUrl }} /> 
             </View>
         );
     };
@@ -105,6 +119,7 @@ const AddNewItemForm = ({ onSubmit }) => {
     //---------------------------------------------------------
     const onChangeCustomRadioButton = (name, text) => {
         console.log("Form in onChangeradioButton:");
+        console.log(name, "  ",  text);
         setForm({
             ...form,
             [name]: text
@@ -113,13 +128,15 @@ const AddNewItemForm = ({ onSubmit }) => {
 
     //---------------------------------------------------------
     const onChangeText = (name) => (text) => {
+        console.log("Form in onChangeText");
+        console.log(name, "  ",  text);
         setForm({
             ...form,
             [name]: text
         })
     }
 
-    console.log("Form in AddNewItemForm");
+    console.log("Form in UpdateCraftForm");
     console.log(form);
 
 
@@ -136,21 +153,30 @@ const AddNewItemForm = ({ onSubmit }) => {
 
                 <KeyboardAvoidingView behavior={"padding"}>
 
+                <Text style={{ fontWeight: "bold", marginLeft: 10 }}>{form._id}</Text>
+
         {/* Type custom radio buttons */}
                     <View style={styles.miniContainer}>
                         <Text style={[styles.paragraph, { fontWeight: "bold" }]}>Choose type: </Text>
-                        <CustomRadioButton data={types} onSelect={(value) => onChangeCustomRadioButton("type", value)} />
+                        <CustomRadioButton data={types} option={form.type} onSelect={(value) => onChangeCustomRadioButton("type", value)} />
                     </View>
 
         {/* Add Image */}
                     <View style={[styles.miniContainer]}>
-                        <Text style={{ fontWeight: "bold", marginLeft: 10 }}>image: </Text>
-                        <View contentInsetAdjustmentBehavior="automatic" style={[styles.imageContainer]}>
-                            <ImageItem key={image.imageName} item={image} />
-                            <Button
+                        <Text style={{ fontWeight: "bold", marginLeft: 10}}>Add image: </Text>
+                        <View contentInsetAdjustmentBehavior="automatic" style={styles.addImageContainer}>
+                            <ImageItem key={imageObj.imageName} item={imageObj} /> 
+                        <Pressable
+                            style={styles.btnAddImage}
+                            onPress={addNewImageHander}>
+                            <Text style={styles.btnText}>Add Image</Text>
+                        </Pressable>
+                            
+{/*                             <Button
                                 title="Add Image"
                                 onPress={addNewImageHander}
-                            />
+                            /> */}
+
                         </View>
                     </View>
 
@@ -160,6 +186,7 @@ const AddNewItemForm = ({ onSubmit }) => {
                         style={styles.input}
                         onChangeText={onChangeText("name")}
                         value={form.name}
+                        text={form.name}
                     />
 
         {/* Description text field */}
@@ -170,6 +197,31 @@ const AddNewItemForm = ({ onSubmit }) => {
                         onChangeText={onChangeText("description")}
                         value={form.description}
                     />
+
+        {/* Materials text field */}
+                    <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Materials: </Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangeText("materials")}
+                        value={form.materials}
+                    />
+
+        {/* Size text field */}
+                    <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Size: </Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangeText("size")}
+                        value={form.size}
+                    />
+
+        {/* Size text field */}
+                    <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Price: </Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangeText("price")}
+                        value={form.price}
+                    />
+
 
         {/* Submit button */}
                     <Pressable
@@ -188,10 +240,11 @@ const AddNewItemForm = ({ onSubmit }) => {
 //-------------- Styles-----------------------------
 const styles = StyleSheet.create({
     container: {
-        //flex: 1,
+        flex: 1,
         padding: 20,
         backgroundColor: "rgba(176, 165, 153, 1)",
         width: 420,
+        
     },
 
     miniContainer: {
@@ -200,7 +253,25 @@ const styles = StyleSheet.create({
         padding: 20,
         width: 400,
         alignSelf: 'center',
+        //backgroundColor: "gray"
 
+    },
+
+    imageContainer: {
+        //flex: 1,
+        //padding: 20,
+        //backgroundColor: "green",
+        //width: 420,
+
+    },
+
+    addImageContainer: {
+        //flex: 1,
+        margin: 20,
+        backgroundColor: "rgba(176, 165, 153, 1)",
+        width: 420,
+        //justifyContent: 'center',
+        alignSelf: 'center',
     },
 
     input: {
@@ -221,10 +292,37 @@ const styles = StyleSheet.create({
 
     image: {
         width: '50%',
-        height: 100,
+        height: 300,
+        alignSelf: "center",
+        margin: 10
+    },
+
+    btnAddImage: {
+        backgroundColor: 'brown',
+        margin: 6,
+        borderRadius: 10,
+        width: 300,
+        alignSelf: 'center',
         borderRadius: 10,
     },
 
+    btnPressMe: {
+        alignSelf: 'center',
+        width: 200,
+        paddingHorizontal: 20,
+        paddingVertical: 8,
+        alignItems: "center",
+        backgroundColor: "rgba(89, 31, 5, 0.83)",
+        borderRadius: 20,
+        marginBottom: 200
+    },
+    
+    btnText: {
+        fontSize: 16,
+        color: 'white',
+        textAlign: 'center',
+        padding: 6
+    }
 })
 
-export default AddNewItemForm;
+export default UpdateCraftForm;

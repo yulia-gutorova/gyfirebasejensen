@@ -1,24 +1,19 @@
 import { View, StyleSheet, Text, Image } from "react-native"
 import React from "react"
 
-const OneItem = ({ title, craft}) => {
-  console.log("Title");
-  console.log(title);
+const OneItem = ({ key,title, craft}) => {
 
-  console.log("Craft");
-  console.log(craft);
+  console.log("Image from image object");
+  console.log(craft.item.imageObject.imageUrl); 
 
-  console.log("Image");
-  console.log(craft.item.image);
-
-
+  //=====================================================
   return (
-    <View style={styles.item}>
+    <View style={styles.item} key={key}>
       <View style={{flex: 0.8}}>
         <Text style={styles.title}>{craft.item.name}</Text>
       </View>
       <View>
-        <Image source={{ uri: `${craft.item.image}`}}
+        <Image source={{ uri: `${craft.item.imageObject.imageUrl}`}}
           style={styles.image} />
       </View>
     </View>
@@ -27,6 +22,7 @@ const OneItem = ({ title, craft}) => {
 
 };
 
+//-------------- Styles-----------------------------
 const styles = StyleSheet.create({
   item: {
     flex: 1,

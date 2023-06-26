@@ -10,98 +10,134 @@ import {
     FlatList,
     Image
 } from "react-native";
+import axios from "axios";
 
-import FontAwesomeIcon, {
-    SolidIcons,
-    RegularIcons,
-    BrandIcons,
-    parseIconFromClassName,
-} from 'react-native-fontawesome';
+import { API_URL } from "@env"
 
 
 const Separator = () => <View style={styles.separator} />;
 
 const CraftDetailScreen = ({ navigation, route }) => {
 
-    const [craftItems, setCraftItems] = useState([]);
+    //const [craftItems, setCraftItems] = useState([]);
     const [showImage, setShowImage] = useState(false);
     const isFocused = useIsFocused();
 
-    //console.log("Route params");
-    //console.log(route.params);
-
-    let image = route.params.craft.item.image;
-    console.log("Route params status");
-    console.log(route.params.craft.item.status);
+    //let type = route.params.craft.item.type;
+    let craft = route.params.craft.item;
 
     useFocusEffect(
         useCallback((type) => {
             setShowImage(false);
-
         }, [isFocused])
-    );
-
+    );  
 
     const handleShowImage = () => {
         setShowImage(!showImage);
     }
 
+    //---------------------------------------------------------
+    const handleDeleteCraft = (id) => {
+        console.log(id);
+
+        //---------------------------------------------------------
+        const deleteCraft = async () => {
+            const URL = API_URL;
+            let url = URL + "/" + id;
+            let resp = await axios.delete(url)
+                .then(resp = await axios.get(URL))
+                .catch((error) => console.log('Error: ', error));
+        };
+
+        deleteCraft(id);
+
+        navigation.navigate("Crafts", { type: route.params.craft.item.type});
+
+    }
+
+    //---------------------------------------------------------
+    const handleMarkCraftSold = (id, name) => {
+        console.log("Inside handleMarkCraftSold");
+        console.log(id);
+        console.log(name);
+        //---------------------------------------------------------
+        const updateCraft = async () => {
+
+            let updatedCraft = {
+                name: name,
+                status: false
+            }
+            const URL = API_URL;
+            let url = URL + "/" + id;
+
+            let resp = await axios.patch(url, updatedCraft)
+                .then(resp = await axios.get(URL))
+                .catch((error) => console.log('Error: ', error));
+        };
+
+        updateCraft();
+        navigation.navigate("Crafts", { type: route.params.craft.item.type })
+    }
+
+    const ability = route.params.craft.item.status ? "Available" : "Unavailable"
+
     return (
+        <>
+            {route.params.craft.item.imageObject.imageUrl !== "" ? <ImageBackground style={styles.container} source={{ uri: `${route.params.craft.item.imageObject.imageUrl}` }}>
 
-        <ImageBackground style={styles.container} source={{ uri: `${route.params.craft.item.image}` }}>
+                <View style={styles.titleContainer}>
+                    <Pressable
+                        style={styles.btnShowImage}
+                        onPress={handleShowImage}>
+                        {showImage === false ? <Text style={styles.titleText}>Hide description</Text> : <Text style={styles.titleText}>Show description</Text>}
 
-            <View style={styles.titleContainer}>
-                <Pressable
-                    style={styles.btnShowImage}
-                    onPress={handleShowImage}>
-                    {showImage === false ? <Text style={styles.titleText}>Hide description</Text> : <Text style={styles.titleText}>Show description</Text>}
-
-                </Pressable>
-            </View>
-
-            <View style={styles.detailContainer}>
-                <View style={[styles.descriptionDetailContainer, showImage === false ? styles.hideImage : styles.showImage]}>
-
-                    <Text style={styles.detailText}>Id: {route.params.craft.item._id}</Text>
-                    <Text style={styles.detailText}>Type: {route.params.craft.item.type}</Text>
-                    <Text style={styles.detailText}>Description: {route.params.craft.item.description}</Text>
-                    <Text style={[styles.titleText, { fontSize: 28, marginBottom: 10 }]}>{route.params.craft.item.name}</Text>
-                    <Text style={styles.detailText}>Materials: {route.params.craft.item.materials}</Text>
-                    <Text style={styles.detailText}>Size:  {route.params.craft.item.size}</Text>
-                    <Text style={styles.detailText}>Price:  {route.params.craft.item.price}</Text>
-                    <Text style={[styles.detailText, { color: route.params.craft.item.status ? "green" : "red" }]}>Status:  {"status"}</Text>
-
-                    <View style={styles.buttonsDetailContainer}>
-                        <Pressable
-                            style={styles.btnDetailContainer}
-                            onPress={() => navigation.push("Home")}>
-                            <Text style={[styles.btnText, { color: "white" }]}>Update </Text>
-                        </Pressable>
-                        <Pressable
-                            style={styles.btnDetailContainer}
-                            onPress={() => navigation.push("Home")}>
-                            <Text style={[styles.btnText, { color: "white" }]}>Delete</Text>
-                        </Pressable>
-                        <Pressable
-                            style={styles.btnDetailContainer}
-                            onPress={() => navigation.push("Home")}>
-                            <Text style={[styles.btnText, { color: "white" }]}>Sold</Text>
-                        </Pressable>
-                    </View>
-
+                    </Pressable>
                 </View>
-            </View>
 
-            <View style={styles.btnContainer}>
-                <Pressable
-                    style={styles.btnBack}
-                    onPress={() => navigation.push("Crafts", { type: route.params.craft.item.type })}>
-                    <Text style={styles.btnText}>Back</Text>
-                </Pressable>
-            </View>
+                <View style={styles.detailContainer}>
+                    <View style={[styles.descriptionDetailContainer, showImage === false ? styles.hideImage : styles.showImage]}>
+
+                        <Text style={[styles.detailText, { fontStyle: "italic" }]}>{route.params.craft.item.description}</Text>
+                        <Text style={[styles.titleText, { fontSize: 28, marginBottom: 10 }]}>{route.params.craft.item.name}</Text>
+                        <Text style={styles.detailText}>Materials: {route.params.craft.item.materials}</Text>
+                        <Text style={styles.detailText}>Size:  {route.params.craft.item.size}</Text>
+                        <Text style={styles.detailText}>Price:  {route.params.craft.item.price}</Text>
+                        <Text style={[styles.detailText, { color: route.params.craft.item.status ? "green" : "red" }, { fontSize: 24 }]}>{ability}</Text>
+
+                        <View style={styles.buttonsDetailContainer}>
+                            <Pressable
+                                style={styles.btnDetailContainer}
+                                onPress={() => navigation.navigate("Update", { craft: { craft } })}>
+                                <Text style={[styles.btnText, { color: "white" }]}>Update </Text>
+                            </Pressable>
+                            <Pressable
+                                style={styles.btnDetailContainer}
+                                onPress={() => handleDeleteCraft(route.params.craft.item._id)}>
+                                <Text style={[styles.btnText, { color: "white" }]}>Delete</Text>
+                            </Pressable>
+                            {route.params.craft.item.status === true ? <Pressable
+                                style={styles.btnDetailContainer}
+                                onPress={() => handleMarkCraftSold(route.params.craft.item._id, route.params.craft.item.name)}>
+                                <Text style={[styles.btnText, { color: "white" }]}>Sold</Text>
+                            </Pressable> : null}
+                        </View>
+
+                    </View>
+                </View>
+
+                <View style={styles.btnContainer}>
+                    <Pressable
+                        style={styles.btnBack}
+                        onPress={() => navigation.push("Crafts", { type: route.params.craft.item.type })}>
+                        <Text style={styles.btnText}>Back</Text>
+                    </Pressable>
+                </View>
 
 
-        </ImageBackground>
+            </ImageBackground> : null}
+        </>
+
+
     )
 }
 
@@ -206,13 +242,14 @@ const styles = StyleSheet.create({
     },
 
     detailText: {
-        fontSize: 18,
+        fontSize: 20,
         color: "black",
         fontWeight: "bold",
         marginTop: 5,
         marginLeft: 10,
+        textShadowColor: 'gray',
         textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 5,
+        textShadowRadius: 1,
 
     },
 

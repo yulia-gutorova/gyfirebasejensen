@@ -18,14 +18,9 @@ const HomeScreen = ({ navigation }) => {
             source={require('../assets/owl-5.jpg')}
             style={styles.container} >
 
-            <View style={[styles.miniContainer,
-            {
-                transform: [{ skewX: '40deg' }, { skewY: '30deg' },],
-            },
-            ]}>
+            <View style={[styles.miniContainer, {transform: [{ skewX: '40deg' }, { skewY: '30deg' }]},]}>
                 <Text style={styles.text}>Crazy Owl </Text>
-                <Text style={styles.text}>would like</Text>
-                <Text style={styles.text}>to present to you</Text>
+                <Text style={styles.text}>presents to you</Text>
                 <Text style={styles.text}>her crazy world</Text>
                 <Text style={styles.text}></Text>
 
@@ -88,7 +83,7 @@ const HomeScreen = ({ navigation }) => {
 
                 <Pressable
                     style={[styles.btnPressMe,]}
-                    onPress={() => navigation.push("AddNewItem")}>
+                    onPress={() => navigation.push("AddNewCraft")}>
                     <Text style={[styles.btnText, { color: "#daa520" }]}> ADD NEW</Text>
                 </Pressable>
             </View>
@@ -122,7 +117,7 @@ const styles = StyleSheet.create({
         width: "70%",
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        paddingTop: 20
+        paddingTop: 50
     },
 
     text: {

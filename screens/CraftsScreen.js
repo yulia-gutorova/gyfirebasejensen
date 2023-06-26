@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useCallback } from "react"
+import { useState, useCallback,useEffect } from "react"
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import {
@@ -29,6 +29,7 @@ const CraftsScreen = ({ navigation, route }) => {
     //to RecipeScreen
     //-----------------------------------------------------
     useFocusEffect(
+
         useCallback((type) => {
             console.log("inside useFocusEffect");
             console.log("Type outside");
@@ -41,7 +42,6 @@ const CraftsScreen = ({ navigation, route }) => {
                         console.log(resp.data);
                         setCrafts(resp.data);
                     })
-
                     .catch((error) => console.log('Error: ', error));
             };
             getAllCrafts(type);
@@ -49,14 +49,35 @@ const CraftsScreen = ({ navigation, route }) => {
         }, [isFocused])
     );
 
+    //-----------------------------------------------------
+    //useEffect to get all recipes when navigating 
+    //to RecipeScreen
+    //-----------------------------------------------------
+    useEffect(() => 
+    { 
+        const getAllCrafts = async (type) => 
+        {
+            console.log("inside useEffect");
+            const resp = await axios.get('https://hobby-app-server-production.up.railway.app/crafts')
+            .then(resp => {
+                console.log("Responce");
+                console.log(resp.data);
+                setCrafts(resp.data);
+            })
+            .catch((error) => console.log('Error: ', error));
+    };
+            getAllCrafts(type);
+
+    }, []);
+
 
     let typeCrafts = crafts.filter(item => item.type === type);
 
 
-    console.log("Crafts outside");
-    console.log(crafts);
-    console.log("Type Crafts");
-    console.log(typeCrafts);
+    //console.log("Crafts outside");
+    //console.log(crafts);
+    //console.log("Type Crafts");
+    //console.log(typeCrafts);
 
     //=====================================================
     return (
@@ -67,7 +88,7 @@ const CraftsScreen = ({ navigation, route }) => {
             </View>
 
             <View style={styles.flatlistContainer}>
-                {typeCrafts.length === 0 ? <Text style={styles.text}>You still don't have any  recipes here.</Text> : null}
+                {typeCrafts.length === 0 ? <Text style={styles.text}>You still don't have any crafts here.</Text> : null}
                 <FlatList
                     style={styles.flatlist}
                     key={type}
@@ -89,7 +110,7 @@ const CraftsScreen = ({ navigation, route }) => {
                 <Pressable
                     style={styles.btnPressMe}
                     onPress={() => navigation.push("Home")}>
-                    <Text style={styles.btnText}> Home</Text>
+                    <Text style={styles.btnText}>Home</Text>
                 </Pressable>
             </View>
 

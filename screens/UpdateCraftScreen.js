@@ -23,42 +23,33 @@ import {
 
 import axios from "axios"
 
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { API_URL } from "@env"
 
-//import storage from '@react-native-firebase/storage';
-//import * as ImagePicker from 'react-native-image-picker';
-import AddNewItemForm from '../components/AddNewItemForm';
+
+import UpdateCraftForm from '../components/UpdateCraftForm';
 import { configDotenv } from 'dotenv';
 
-//const reference = storage();
-
-
-/* const Item = ({ item }) => {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.imageName}>{item.imageName}</Text>
-            <Image style={styles.image} source={{ uri: item.imageUrl }} />
-        </View>
-    );
-}; */
 
 const Separator = () => <View style={styles.separator} />;
 
-const AddNewItemScreen = ({ navigation }) => {
+const UpdateCraftScreen = ({ navigation, route }) => {
 
-    //const [images, setImages] = useState([]);
+    let craftToUpdate = route.params.craft;
+    console.log("Craft to update in UpdateCraftScreen");
+    console.log(craftToUpdate);
+
+
     const isDarkMode = useColorScheme() === 'dark';
 
     const handleFormSubmit = (form) => {
 
-        console.log("Inside handleFormSubmit function");
-        console.log("Form inside handleFormSubmit function");
+        console.log("Inside handleFormSubmit function in update screen");
+        console.log("Form inside handleFormSubmit function in update screen");
         console.log(form);
 
-        const createItem = async (form) => {
+        const updateItem = async (form) => {
 
-            let newItem =
+            let updatedItem =
             {
                 type: form.type,
                 name: form.name,
@@ -66,19 +57,22 @@ const AddNewItemScreen = ({ navigation }) => {
                 materials: form.materials,
                 size: form.size,
                 price: form.price,
+                imageObject: form.imageObject,
                 image: form.image,
             }
 
-            console.log(newItem);
+            console.log(updatedItem);
             const URL = API_URL;
-            console.log("URL:");
-            console.log(URL);
-            const resp = await axios.post(URL, newItem)
-                .then(navigation.push("Crafts", { type: form.type }))
+            let url = URL + "/" + form._id
+            console.log("url:");
+            console.log(url);
+            let resp = await axios.patch(url, updatedItem)
+                .then(resp = await axios.get(URL))
                 .catch((error) => console.log('Error: ', error));
         }
 
-        createItem(form);
+        updateItem(form);
+        navigation.navigate("Crafts", { type: form.type })
 
     }
 
@@ -92,19 +86,18 @@ const AddNewItemScreen = ({ navigation }) => {
             style={styles.container} >
 
             <View style={styles.titleContainer}>
-                <Text style={styles.text}>Add a new craft</Text>
+                <Text style={styles.text}>Update a craft</Text>
             </View>
 
             <View style={[styles.miniContainer]}>
-                <AddNewItemForm onSubmit={handleFormSubmit} />
+                <UpdateCraftForm onSubmit={handleFormSubmit} craft = {craftToUpdate}/>
             </View>
 
             <View style={styles.btnContainer}>
-                <Separator />
                 <Pressable
                     style={styles.btnPressMe}
-                    onPress={() => navigation.push("Home")}>
-                    <Text style={styles.btnText}>GoHome</Text>
+                    onPress={() => navigation.navigate("Crafts", {type: craftToUpdate.craft.type})}>
+                    <Text style={styles.btnText}>Back</Text>
                 </Pressable>
             </View>
         </KeyboardAvoidingView>
@@ -174,7 +167,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingLeft: 100,
         paddingRight: 20,
-        backgroundColor: "gray"
+        //backgroundColor: "gray"
     },
     text: {
         fontSize: 24,
@@ -189,4 +182,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddNewItemScreen;
+export default UpdateCraftScreen;

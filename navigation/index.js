@@ -1,11 +1,12 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-import AddNewItemScreen from '../screens/AddNewItemScreen';
+import AddNewCraftScreen from '../screens/AddNewCraftScreen';
 import HomeScreen from '../home/HomeScreen';
 import LoginScreen from '../login/LoginScreen';
 import CraftsScreen from '../screens/CraftsScreen';
 import CraftDetailScreen from '../screens/CraftDetailScreen';
+import UpdateCraftScreen from '../screens/UpdateCraftScreen';
 
 export default function Navigation() {
 
@@ -23,8 +24,8 @@ export default function Navigation() {
                         options={{headerShown: false}}
                         /> 
                 <Stack.Screen 
-                        name="AddNewItem"
-                        component={AddNewItemScreen}
+                        name="AddNewCraft"
+                        component={AddNewCraftScreen}
                         options={{headerShown: false}}
                         />  
 
@@ -44,7 +45,13 @@ export default function Navigation() {
                         name="CraftDetail"
                         component={CraftDetailScreen}
                         options={{headerShown: false}}
-                        />              
+                        />    
+
+                <Stack.Screen 
+                        name="Update"
+                        component={UpdateCraftScreen}
+                        options={{headerShown: false}}
+                        />            
       </Stack.Navigator>
     </NavigationContainer>
   );
