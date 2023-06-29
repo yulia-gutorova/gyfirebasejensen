@@ -17,6 +17,7 @@ import storage from '@react-native-firebase/storage';
 import * as ImagePicker from 'react-native-image-picker';
 
 import CustomRadioButton from "./CustomRadioButton";
+import ImageItem from "./ImageItem";
 
 const reference = storage();
 
@@ -35,14 +36,14 @@ const AddNewCraftForm = ({ onSubmit }) => {
         materials: "",
         size: "",
         price: "",
-        imageObject: { imageName: "", imageUrl: null},
+        imageObject: { imageName: "", imageUrl: null },
         image: "",
     });
 
     const types = ["Sewing", "Knitting", "Crochet", "Embroidery", "Felting"];
 
+    //---------------------------------------------------------
     const addNewImageHander = async () => {
-        //console.log('Add Image');
         await ImagePicker.launchImageLibrary
             (
                 {
@@ -51,8 +52,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
                     includeBase64: false,
                 },
 
-                async response => 
-                {
+                async response => {
                     if (response.didCancel) {
                         console.log('User cancelled image picker');
                     } else if (response.errorCode) {
@@ -72,10 +72,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
                             .ref(imagePath)
                             .putFile(fileUri)
                             .then(async result => {
-                                //console.log('added image');
                                 const url = await reference.ref(imagePath).getDownloadURL();
-                               // console.log('Image path:', imagePath);
-                               //console.log('Image Url is', url);
 
                                 const itemData =
                                 {
@@ -83,17 +80,12 @@ const AddNewCraftForm = ({ onSubmit }) => {
                                     imageUrl: url,
                                 };
 
-                                //console.log('ItemData in addNewImageHander');
-                                //console.log(itemData);
-
                                 setImageObj(itemData);
-
                                 setForm({
                                     ...form,
                                     imageObject: itemData,
                                     image: url
                                 })
-
                             });
                     }
                 },
@@ -102,17 +94,17 @@ const AddNewCraftForm = ({ onSubmit }) => {
 
     }
 
-    const ImageItem = ({ item }) => {
+    //---------------------------------------------------------
+/*     const ImageItem = ({ item }) => {
         return (
             <View style={styles.imageContainer}>
-                <Image style={styles.image} source={{ uri: item.imageUrl }} /> 
+                <Image style={styles.image} source={{ uri: item.imageUrl }} />
             </View>
         );
-    };
+    }; */
 
     //---------------------------------------------------------
     const onChangeCustomRadioButton = (name, text) => {
-        //console.log("Form in onChangeradioButton:");
         setForm({
             ...form,
             [name]: text
@@ -127,26 +119,22 @@ const AddNewCraftForm = ({ onSubmit }) => {
         })
     }
 
-    //console.log("Form in AddNewCraftForm");
-    //console.log(form);
-
+    //---------------------------------------------------------
     const submitHandler = (form) => {
 
-        if (form.type.trim().length === 0 || 
-            form.name.trim().length === 0 || 
+        if (form.type.trim().length === 0 ||
+            form.name.trim().length === 0 ||
             form.description.trim().length === 0 ||
             form.materials.trim().length === 0 ||
             form.size.trim().length === 0 ||
             form.price.trim().length === 0 ||
             form.imageObject.imageName.trim().length === 0 ||
             form.imageObject.imageUrl.trim().length === 0 ||
-            form.image.trim().length === 0 )
-            {
-                Alert.alert('Check that you have filled in all the input fields');
-            }
+            form.image.trim().length === 0) {
+            Alert.alert('Check that you have filled in all the input fields');
+        }
 
-        else{onSubmit(form)};    
-
+        else { onSubmit(form) };
     }
 
 
@@ -163,40 +151,35 @@ const AddNewCraftForm = ({ onSubmit }) => {
 
                 <KeyboardAvoidingView behavior={"padding"}>
 
-        {/* Type custom radio buttons */}
+                    {/* Type custom radio buttons */}
                     <View style={styles.miniContainer}>
                         <Text style={[styles.paragraph, { fontWeight: "bold" }]}>Choose type: </Text>
                         <CustomRadioButton data={types} onSelect={(value) => onChangeCustomRadioButton("type", value)} />
                     </View>
 
-        {/* Add Image */}
+                    {/* Add Image */}
                     <View style={[styles.miniContainer]}>
-                        <Text style={{ fontWeight: "bold", marginLeft: 10}}>Add image: </Text>
+                        <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Add image: </Text>
                         <View contentInsetAdjustmentBehavior="automatic" style={styles.addImageContainer}>
                             {imageObj.imageUrl !== null ? <ImageItem key={imageObj.imageName} item={imageObj} /> : null}
-                        <Pressable
-                            style={styles.btnAddImage}
-                            onPress={addNewImageHander}>
-                            <Text style={styles.btnText}>Add Image</Text>
-                        </Pressable>
-                            
-{/*                             <Button
-                                title="Add Image"
-                                onPress={addNewImageHander}
-                            /> */}
+                            <Pressable
+                                style={styles.btnAddImage}
+                                onPress={addNewImageHander}>
+                                <Text style={styles.btnText}>Add Image</Text>
+                            </Pressable>
 
                         </View>
                     </View>
 
-        {/* Name text field */}
+                    {/* Name text field */}
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Name: </Text>
                     <TextInput
                         style={styles.input}
                         onChangeText={onChangeText("name")}
-                        value={form.name} 
+                        value={form.name}
                     />
 
-        {/* Description text field */}
+                    {/* Description text field */}
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Description: </Text>
                     <TextInput
                         multiline={true}
@@ -205,7 +188,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
                         value={form.description}
                     />
 
-        {/* Materials text field */}
+                    {/* Materials text field */}
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Materials: </Text>
                     <TextInput
                         style={styles.input}
@@ -213,7 +196,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
                         value={form.materials}
                     />
 
-        {/* Size text field */}
+                    {/* Size text field */}
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Size: </Text>
                     <TextInput
                         style={styles.input}
@@ -221,7 +204,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
                         value={form.size}
                     />
 
-        {/* Size text field */}
+                    {/* Size text field */}
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Price: </Text>
                     <TextInput
                         style={styles.input}
@@ -230,7 +213,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
                     />
 
 
-        {/* Submit button */}
+                    {/* Submit button */}
                     <Pressable
                         style={styles.btnPressMe}
                         // onPress={() => onSubmit(form)}>
@@ -252,7 +235,7 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: "rgba(176, 165, 153, 1)",
         width: 420,
-        
+
     },
 
     miniContainer: {
@@ -265,20 +248,16 @@ const styles = StyleSheet.create({
 
     },
 
-    imageContainer: {
+/*     imageContainer: {
         //flex: 1,
         //padding: 20,
         //backgroundColor: "green",
         //width: 420,
-
-    },
+    }, */
 
     addImageContainer: {
-        //flex: 1,
         margin: 20,
-        //backgroundColor: "rgba(176, 165, 153, 1)",
         width: 420,
-        //justifyContent: 'center',
         alignSelf: 'center',
     },
 
@@ -298,12 +277,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
 
-    image: {
+/*     image: {
         width: '40%',
         height: 200,
         alignSelf: "center",
         margin: 10
-    },
+    }, */
 
     btnAddImage: {
         backgroundColor: 'brown',
@@ -324,7 +303,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginBottom: 200
     },
-    
+
     btnText: {
         fontSize: 16,
         color: 'white',

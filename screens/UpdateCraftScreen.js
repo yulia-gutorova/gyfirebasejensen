@@ -35,9 +35,6 @@ const Separator = () => <View style={styles.separator} />;
 const UpdateCraftScreen = ({ navigation, route }) => {
 
     let craftToUpdate = route.params.craft;
-    //console.log("Craft to update in UpdateCraftScreen");
-    //console.log(craftToUpdate);
-
     let admin = route.params.admin;
     console.log("Route admin in UpdateCraftScreen");
     console.log(route.params.admin);
@@ -45,12 +42,12 @@ const UpdateCraftScreen = ({ navigation, route }) => {
 
     const isDarkMode = useColorScheme() === 'dark';
 
+    //---------------------------------------------------------
     const handleFormSubmit = (form) => {
 
-        //console.log("Inside handleFormSubmit function in update screen");
-        //console.log("Form inside handleFormSubmit function in update screen");
-        //console.log(form);
-
+        //---------------------------------------------------------
+        //API PATCH to update craft
+        //---------------------------------------------------------
         const updateItem = async (form) => {
 
             let updatedItem =
@@ -65,15 +62,12 @@ const UpdateCraftScreen = ({ navigation, route }) => {
                 image: form.image,
             }
 
-            //console.log(updatedItem);
-            const URL = API_URL;
-            let url = URL + "/" + form._id
-            //console.log("url:");
-            //console.log(url);
+            let url = API_URL + "/" + form._id
             let resp = await axios.patch(url, updatedItem)
-                .then(resp = await axios.get(URL))
+                .then(resp = await axios.get(API_URL))
                 .catch((error) => console.log('Error: ', error));
         }
+        //---------------------------------------------------------
 
         updateItem(form);
         navigation.navigate("Crafts", { type: form.type, admin : admin})
@@ -137,8 +131,6 @@ const styles = StyleSheet.create({
     },
 
     miniContainer: {
-        //borderColor: "black",
-        //borderWidth: 1,
         flex: 0.8,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
@@ -177,8 +169,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingLeft: 100,
         paddingRight: 20,
-        //backgroundColor: "gray"
     },
+
     text: {
         fontSize: 24,
         color: "#daa520",

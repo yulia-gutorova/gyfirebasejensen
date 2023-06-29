@@ -19,24 +19,25 @@ import { API_URL } from "@env"
 const Separator = () => <View style={styles.separator} />;
 
 const CraftDetailScreen = ({ navigation, route }) => {
-
-    //const [craftItems, setCraftItems] = useState([]);
+;
     const [showImage, setShowImage] = useState(false);
     const isFocused = useIsFocused();
-
-    console.log("Route admin in CraftDetailScreen");
-    console.log(route.params.admin);
 
     //let type = route.params.craft.item.type;
     let craft = route.params.craft.item;
     let admin = route.params.admin;
 
+    const ability = route.params.craft.item.status ? "Available" : "Unavailable";
+
+    //---------------------------------------------------------
     useFocusEffect(
         useCallback((type) => {
             setShowImage(false);
         }, [isFocused])
     );  
 
+
+    //---------------------------------------------------------
     const handleShowImage = () => {
         setShowImage(!showImage);
     }
@@ -45,13 +46,15 @@ const CraftDetailScreen = ({ navigation, route }) => {
     const handleDeleteCraft = (id) => {
 
         //---------------------------------------------------------
-        const deleteCraft = async () => {
-            const URL = API_URL;
-            let url = URL + "/" + id;
-            let resp = await axios.delete(url)
-                .then(resp = await axios.get(URL))
-                .catch((error) => console.log('Error: ', error));
-        };
+        // API DELETE to delete craft
+        //---------------------------------------------------------
+            const deleteCraft = async () => {
+                let url = API_URL + "/" + id;
+                let resp = await axios.delete(url)
+                    .then(resp = await axios.get(API_URL))
+                    .catch((error) => console.log('Error: ', error));
+            };
+        //---------------------------------------------------------
 
         Alert.alert
         (
@@ -73,30 +76,31 @@ const CraftDetailScreen = ({ navigation, route }) => {
         //console.log(id);
         //console.log(name);
         //---------------------------------------------------------
-        const updateCraft = async () => {
+        // API PATCH to update craft
+        //---------------------------------------------------------
+            const updateCraft = async () => {
 
-            let updatedCraft = {
-                name: name,
-                status: false
-            }
-            const URL = API_URL;
-            let url = URL + "/" + id;
-
-            let resp = await axios.patch(url, updatedCraft)
-                .then(resp = await axios.get(URL))
-                .catch((error) => console.log('Error: ', error));
-        };
+                let updatedCraft = {
+                    name: name,
+                    status: false
+                }
+                let url = API_URL + "/" + id;
+                let resp = await axios.patch(url, updatedCraft)
+                    .then(resp = await axios.get(API_URL))
+                    .catch((error) => console.log('Error: ', error));
+            };
+        //---------------------------------------------------------
 
         updateCraft();
         navigation.navigate("Crafts", { type: route.params.craft.item.type, admin: admin})
     }
 
-    const ability = route.params.craft.item.status ? "Available" : "Unavailable"
 
     //=====================================================
     return (
         <>
-            {route.params.craft.item.imageObject.imageUrl !== "" ? <ImageBackground style={styles.container} source={{ uri: `${route.params.craft.item.imageObject.imageUrl}`}}>
+            {route.params.craft.item.imageObject.imageUrl !== "" ? 
+            <ImageBackground style={styles.container} source={{ uri: `${route.params.craft.item.imageObject.imageUrl}`}}>
 
                 <View style={styles.titleContainer}>
                     <Pressable
@@ -117,7 +121,7 @@ const CraftDetailScreen = ({ navigation, route }) => {
                         <Text style={styles.detailText}>Price:  {route.params.craft.item.price}</Text>
                         <Text style={[styles.detailText, { color: route.params.craft.item.status ? "darkgreen" : "red" }, { fontSize: 24 }]}>{ability}</Text>
 
-                        <View style={styles.buttonsDetailContainer}>
+                        {admin === true ?<View style={styles.buttonsDetailContainer}>
                             <Pressable
                                 style={styles.btnDetailContainer}
                                 onPress={() => navigation.navigate("Update", { craft: { craft }, admin : admin})}>
@@ -128,12 +132,13 @@ const CraftDetailScreen = ({ navigation, route }) => {
                                 onPress={() => handleDeleteCraft(route.params.craft.item._id)}>
                                 <Text style={[styles.btnText, { color: "white" }]}>Delete</Text>
                             </Pressable>
-                            {route.params.craft.item.status === true ? <Pressable
+                            {route.params.craft.item.status === true ? 
+                            <Pressable
                                 style={styles.btnDetailContainer}
                                 onPress={() => handleMarkCraftSold(route.params.craft.item._id, route.params.craft.item.name)}>
                                 <Text style={[styles.btnText, { color: "white" }]}>Sold</Text>
                             </Pressable> : null}
-                        </View>
+                        </View> : null}
 
                     </View>
                 </View>
@@ -177,7 +182,6 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 200,
         alignItems: 'flex-end',
         justifyContent: 'center',
-        //backgroundColor: "gray",
     },
 
     //-------------------------------------------------------------
@@ -185,7 +189,6 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingLeft: 10,
         paddingRight: 10,
-        //backgroundColor: "gray"
     },
 
     //-------------------------------------------------------------
@@ -196,18 +199,14 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(108, 56, 32, 0.83)",
         borderBottomRightRadius: 500,
         borderBottomLeftRadius: 200,
-        //opacity: 0.8
     },
 
     //-------------------------------------------------------------
     detailContainer: {
         flex: 6,
-        //backgroundColor: "white",
         marginVertical: 20,
         borderRadius: 20,
         width: "90%",
-        //alignItems: 'center',
-        //opacity: 0.8
     },
 
     //-------------------------------------------------------------
@@ -283,7 +282,6 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingLeft: 120,
         paddingRight: 20,
-        //backgroundColor: "gray"
     },
 
 

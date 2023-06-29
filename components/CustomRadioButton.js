@@ -13,9 +13,7 @@ export default function CustomRadioButton({ data, option, onSelect }) {
     const selectHandler = (value) => {
         onSelect(value);
         setUserOption(value); 
-
     };
-
 
 
   //=====================================================

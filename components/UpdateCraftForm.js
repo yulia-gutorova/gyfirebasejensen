@@ -47,8 +47,6 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
     //console.log("Form in UpdateCraftForm");
     //console.log(form);
 
-
-
     const types = ["Sewing", "Knitting", "Crochet", "Embroidery", "Felting"];
 
     const addNewImageHander = async () => {

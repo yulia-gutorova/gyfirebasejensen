@@ -40,16 +40,13 @@ const AddNewCraftScreen = ({ navigation, route }) => {
     const isDarkMode = useColorScheme() === 'dark';
 
     let admin  = route.params.admin;
-
-    console.log("Route admin in AddNewCraftScreen");
-    console.log(route.params.admin);
-
+    
+    //---------------------------------------------------------
     const handleFormSubmit = (form) => {
 
-        //console.log("Inside handleFormSubmit function in AddNewCraftScreen");
-        //console.log("Form inside handleFormSubmit function");
-        //console.log(form);
-
+        //---------------------------------------------------------
+        //API POST to create a new craft
+        //---------------------------------------------------------
         const createItem = async (form) => {
 
             let newItem =
@@ -64,14 +61,8 @@ const AddNewCraftScreen = ({ navigation, route }) => {
                 image: form.image,   
             }
 
-            //console.log("NewItem inside createItem function");
-            //console.log(newItem);
-
-            const URL = API_URL;
-            //console.log("URL:");
-            //console.log(URL);
-            let resp = await axios.post(URL, newItem)
-                .then(resp = await axios.get(URL))
+            let resp = await axios.post(API_URL, newItem)
+                .then(resp = await axios.get(API_URL))
                 .catch((error) => console.log('Error: ', error));
         }
 
@@ -112,6 +103,7 @@ const windowWidth = Dimensions.get('window').width;
 
 //-------------- Styles-----------------------------
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         margin: 0,
@@ -137,8 +129,6 @@ const styles = StyleSheet.create({
     },
 
     miniContainer: {
-        //borderColor: "black",
-        //borderWidth: 1,
         flex: 0.8,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
@@ -177,8 +167,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingLeft: 100,
         paddingRight: 20,
-        //backgroundColor: "gray"
     },
+
     text: {
         fontSize: 24,
         color: "#daa520",

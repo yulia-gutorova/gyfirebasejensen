@@ -26,22 +26,17 @@ const CraftsScreen = ({ navigation, route }) => {
 
     const [addNewCraft, setAddNewCrafts] = useState(false);
 
-    
-
-    console.log("route.params.admin in CraftScreen");
-    console.log(route.params.admin + "");
-
     const isFocused = useIsFocused();
 
 
     //-----------------------------------------------------
-    //useFocusEffect to get all recipes when navigating 
+    //useFocusEffect to get all crafts when navigating 
     //to RecipeScreen
     //-----------------------------------------------------
     useFocusEffect(
 
         useCallback((type) => {
-            //console.log("inside useFocusEffect");
+            console.log("inside useFocusEffect");
             //console.log("Type outside");
             //console.log(type);
             const getAllCrafts = async (type) => {
@@ -60,8 +55,7 @@ const CraftsScreen = ({ navigation, route }) => {
     );
 
     //-----------------------------------------------------
-    //useEffect to get all recipes when navigating 
-    //to RecipeScreen
+    //useEffect to get all recipes when loading CraftScreen
     //-----------------------------------------------------
     useEffect(() => 
     { 
@@ -70,8 +64,6 @@ const CraftsScreen = ({ navigation, route }) => {
            // console.log("inside useEffect");
             const resp = await axios.get(API_URL)
             .then(resp => {
-                //console.log("Responce");
-                //console.log(resp.data);
                 setCrafts(resp.data);
             })
             .catch((error) => console.log('Error: ', error));
@@ -80,14 +72,11 @@ const CraftsScreen = ({ navigation, route }) => {
 
     }, []);
 
+    console.log("Crafts outside");
+    console.log(crafts);
 
     let typeCrafts = crafts.filter(item => item.type === type);
 
-
-    //console.log("Crafts outside");
-    //console.log(crafts);
-    //console.log("Type Crafts");
-    //console.log(typeCrafts);
 
     //=====================================================
     return (
@@ -108,7 +97,7 @@ const CraftsScreen = ({ navigation, route }) => {
                     renderItem={({ item }) => {
                         return (
                         <>
-                            <Pressable key={route.params._id}  onPress={() => navigation.navigate("CraftDetail", { title: item.name, craft: { item }, admin: admin })}>
+                            <Pressable onPress={() => navigation.navigate("CraftDetail", { title: item.name, craft: { item }, admin: admin })}>
                                 <OneItem key={item._id} title={item.name} craft={{ item }} />
                             </Pressable>
                         </>
@@ -163,7 +152,6 @@ const styles = StyleSheet.create({
 
     flatlistContainer: {
         flex: 0.8,
-        //backgroundColor: "rgba(0, 0, 0, 0.62)",
         width: "100%",
         alignItems: 'center',
         justifyContent: 'center',
