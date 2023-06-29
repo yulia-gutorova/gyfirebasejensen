@@ -1,10 +1,7 @@
 import { View, StyleSheet, Text, Image } from "react-native"
 import React from "react"
 
-const OneItem = ({ key,title, craft}) => {
-
-  console.log("Image from image object");
-  console.log(craft.item.imageObject.imageUrl); 
+const OneItem = ({ key ,title, craft}) => {
 
   //=====================================================
   return (
@@ -13,13 +10,10 @@ const OneItem = ({ key,title, craft}) => {
         <Text style={styles.title}>{craft.item.name}</Text>
       </View>
       <View>
-        <Image source={{ uri: `${craft.item.imageObject.imageUrl}`}}
-          style={styles.image} />
+        <Image source={{ uri: `${craft.item.imageObject.imageUrl}`}} style={styles.image} />
       </View>
     </View>
-  
   )
-
 };
 
 //-------------- Styles-----------------------------

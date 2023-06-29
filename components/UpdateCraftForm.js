@@ -20,17 +20,17 @@ import CustomRadioButton from "./CustomRadioButton";
 const reference = storage();
 
 //---------------------------------------------------------
-const UpdateCraftForm = ({ onSubmit, craft}) => {
+const UpdateCraftForm = ({ onSubmit, craft }) => {
 
-    console.log("In UpdateCraftForm");
-    console.log("Craft:");
-    console.log(craft);
+    //console.log("In UpdateCraftForm");
+    //console.log("Craft:");
+    //console.log(craft);
 
- 
+
     const [imageObj, setImageObj] = useState({
         imageName: craft.craft.imageObject.imageName,
         imageUrl: craft.craft.imageObject.imageUrl,
-    }); 
+    });
 
     const [form, setForm] = useState({
         _id: craft.craft._id,
@@ -40,14 +40,14 @@ const UpdateCraftForm = ({ onSubmit, craft}) => {
         materials: craft.craft.materials,
         size: craft.craft.size,
         price: craft.craft.price,
-        imageObject: {imageName: craft.craft.imageObject.imageName, imageUrl: craft.craft.imageObject.imageUrl},
+        imageObject: { imageName: craft.craft.imageObject.imageName, imageUrl: craft.craft.imageObject.imageUrl },
         image: craft.craft.image,
     });
 
-    console.log("Form in UpdateCraftForm");
-    console.log(form);
+    //console.log("Form in UpdateCraftForm");
+    //console.log(form);
 
-    
+
 
     const types = ["Sewing", "Knitting", "Crochet", "Embroidery", "Felting"];
 
@@ -61,8 +61,7 @@ const UpdateCraftForm = ({ onSubmit, craft}) => {
                     includeBase64: false,
                 },
 
-                async response => 
-                {
+                async response => {
                     if (response.didCancel) {
                         console.log('User cancelled image picker');
                     } else if (response.errorCode) {
@@ -110,16 +109,15 @@ const UpdateCraftForm = ({ onSubmit, craft}) => {
     const ImageItem = ({ item }) => {
         return (
             <View style={styles.imageContainer}>
-                <Text style={styles.imageName}>{item.imageName}</Text>
-                <Image style={styles.image} source={{ uri: item.imageUrl }} /> 
+                <Image style={styles.image} source={{ uri: item.imageUrl }} />
             </View>
         );
     };
 
     //---------------------------------------------------------
     const onChangeCustomRadioButton = (name, text) => {
-        console.log("Form in onChangeradioButton:");
-        console.log(name, "  ",  text);
+        //console.log("Form in onChangeradioButton:");
+        //console.log(name, "  ", text);
         setForm({
             ...form,
             [name]: text
@@ -128,16 +126,16 @@ const UpdateCraftForm = ({ onSubmit, craft}) => {
 
     //---------------------------------------------------------
     const onChangeText = (name) => (text) => {
-        console.log("Form in onChangeText");
-        console.log(name, "  ",  text);
+       // console.log("Form in onChangeText");
+        //console.log(name, "  ", text);
         setForm({
             ...form,
             [name]: text
         })
     }
 
-    console.log("Form in UpdateCraftForm");
-    console.log(form);
+    //console.log("Form in UpdateCraftForm");
+    //console.log(form);
 
 
     //=====================================================
@@ -153,34 +151,27 @@ const UpdateCraftForm = ({ onSubmit, craft}) => {
 
                 <KeyboardAvoidingView behavior={"padding"}>
 
-                <Text style={{ fontWeight: "bold", marginLeft: 10 }}>{form._id}</Text>
-
-        {/* Type custom radio buttons */}
+                    {/* Type custom radio buttons */}
                     <View style={styles.miniContainer}>
                         <Text style={[styles.paragraph, { fontWeight: "bold" }]}>Choose type: </Text>
                         <CustomRadioButton data={types} option={form.type} onSelect={(value) => onChangeCustomRadioButton("type", value)} />
                     </View>
 
-        {/* Add Image */}
+                    {/* Change Image */}
                     <View style={[styles.miniContainer]}>
-                        <Text style={{ fontWeight: "bold", marginLeft: 10}}>Add image: </Text>
+                        <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Add image: </Text>
                         <View contentInsetAdjustmentBehavior="automatic" style={styles.addImageContainer}>
-                            <ImageItem key={imageObj.imageName} item={imageObj} /> 
-                        <Pressable
-                            style={styles.btnAddImage}
-                            onPress={addNewImageHander}>
-                            <Text style={styles.btnText}>Add Image</Text>
-                        </Pressable>
-                            
-{/*                             <Button
-                                title="Add Image"
-                                onPress={addNewImageHander}
-                            /> */}
+                            <ImageItem key={imageObj.imageName} item={imageObj} />
+                            <Pressable
+                                style={styles.btnAddImage}
+                                onPress={addNewImageHander}>
+                                <Text style={styles.btnText}>Add Image</Text>
+                            </Pressable>
 
                         </View>
                     </View>
 
-        {/* Name text field */}
+                    {/* Name text field */}
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Name: </Text>
                     <TextInput
                         style={styles.input}
@@ -189,7 +180,7 @@ const UpdateCraftForm = ({ onSubmit, craft}) => {
                         text={form.name}
                     />
 
-        {/* Description text field */}
+                    {/* Description text field */}
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Description: </Text>
                     <TextInput
                         multiline={true}
@@ -198,7 +189,7 @@ const UpdateCraftForm = ({ onSubmit, craft}) => {
                         value={form.description}
                     />
 
-        {/* Materials text field */}
+                    {/* Materials text field */}
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Materials: </Text>
                     <TextInput
                         style={styles.input}
@@ -206,7 +197,7 @@ const UpdateCraftForm = ({ onSubmit, craft}) => {
                         value={form.materials}
                     />
 
-        {/* Size text field */}
+                    {/* Size text field */}
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Size: </Text>
                     <TextInput
                         style={styles.input}
@@ -214,7 +205,7 @@ const UpdateCraftForm = ({ onSubmit, craft}) => {
                         value={form.size}
                     />
 
-        {/* Size text field */}
+                    {/* Size text field */}
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Price: </Text>
                     <TextInput
                         style={styles.input}
@@ -223,7 +214,7 @@ const UpdateCraftForm = ({ onSubmit, craft}) => {
                     />
 
 
-        {/* Submit button */}
+                    {/* Submit button */}
                     <Pressable
                         style={styles.btnPressMe}
                         onPress={() => onSubmit(form)}>
@@ -242,13 +233,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: "rgba(176, 165, 153, 1)",
+        //backgroundColor: "rgba(176, 165, 153, 1)",
         width: 420,
-        
+
     },
 
     miniContainer: {
-        borderColor: "black",
+        //borderColor: "black",
         borderWidth: 1,
         padding: 20,
         width: 400,
@@ -268,7 +259,7 @@ const styles = StyleSheet.create({
     addImageContainer: {
         //flex: 1,
         margin: 20,
-        backgroundColor: "rgba(176, 165, 153, 1)",
+        //backgroundColor: "rgba(176, 165, 153, 1)",
         width: 420,
         //justifyContent: 'center',
         alignSelf: 'center',
@@ -316,7 +307,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginBottom: 200
     },
-    
+
     btnText: {
         fontSize: 16,
         color: 'white',

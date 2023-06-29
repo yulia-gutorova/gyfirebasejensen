@@ -9,7 +9,8 @@ import {
     SafeAreaView,
     Button,
     KeyboardAvoidingView,
-    Image
+    Image,
+    Alert
 } from "react-native"
 
 import storage from '@react-native-firebase/storage';
@@ -73,8 +74,8 @@ const AddNewCraftForm = ({ onSubmit }) => {
                             .then(async result => {
                                 //console.log('added image');
                                 const url = await reference.ref(imagePath).getDownloadURL();
-                                console.log('Image path:', imagePath);
-                                console.log('Image Url is', url);
+                               // console.log('Image path:', imagePath);
+                               //console.log('Image Url is', url);
 
                                 const itemData =
                                 {
@@ -82,15 +83,10 @@ const AddNewCraftForm = ({ onSubmit }) => {
                                     imageUrl: url,
                                 };
 
-                                console.log('ItemData in addNewImageHander');
-                                console.log(itemData);
+                                //console.log('ItemData in addNewImageHander');
+                                //console.log(itemData);
 
                                 setImageObj(itemData);
-/* 
-                                setForm({
-                                    ...form,
-                                    image: url
-                                }) */
 
                                 setForm({
                                     ...form,
@@ -109,7 +105,6 @@ const AddNewCraftForm = ({ onSubmit }) => {
     const ImageItem = ({ item }) => {
         return (
             <View style={styles.imageContainer}>
-                <Text style={styles.imageName}>{item.imageName}</Text>
                 <Image style={styles.image} source={{ uri: item.imageUrl }} /> 
             </View>
         );
@@ -117,7 +112,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
 
     //---------------------------------------------------------
     const onChangeCustomRadioButton = (name, text) => {
-        console.log("Form in onChangeradioButton:");
+        //console.log("Form in onChangeradioButton:");
         setForm({
             ...form,
             [name]: text
@@ -134,6 +129,25 @@ const AddNewCraftForm = ({ onSubmit }) => {
 
     //console.log("Form in AddNewCraftForm");
     //console.log(form);
+
+    const submitHandler = (form) => {
+
+        if (form.type.trim().length === 0 || 
+            form.name.trim().length === 0 || 
+            form.description.trim().length === 0 ||
+            form.materials.trim().length === 0 ||
+            form.size.trim().length === 0 ||
+            form.price.trim().length === 0 ||
+            form.imageObject.imageName.trim().length === 0 ||
+            form.imageObject.imageUrl.trim().length === 0 ||
+            form.image.trim().length === 0 )
+            {
+                Alert.alert('Check that you have filled in all the input fields');
+            }
+
+        else{onSubmit(form)};    
+
+    }
 
 
     //=====================================================
@@ -179,7 +193,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
                     <TextInput
                         style={styles.input}
                         onChangeText={onChangeText("name")}
-                        value={form.name}
+                        value={form.name} 
                     />
 
         {/* Description text field */}
@@ -219,7 +233,8 @@ const AddNewCraftForm = ({ onSubmit }) => {
         {/* Submit button */}
                     <Pressable
                         style={styles.btnPressMe}
-                        onPress={() => onSubmit(form)}>
+                        // onPress={() => onSubmit(form)}>
+                        onPress={() => submitHandler(form)}>
                         <Text style={styles.btnText}>Submit</Text>
                     </Pressable>
 
@@ -261,7 +276,7 @@ const styles = StyleSheet.create({
     addImageContainer: {
         //flex: 1,
         margin: 20,
-        backgroundColor: "rgba(176, 165, 153, 1)",
+        //backgroundColor: "rgba(176, 165, 153, 1)",
         width: 420,
         //justifyContent: 'center',
         alignSelf: 'center',

@@ -10,9 +10,12 @@ import {
 
 const Separator = () => <View style={styles.separator} />;
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
 
+    console.log("Route admin in HomeScreen");
+    console.log(route.params.admin);
 
+    //=====================================================
     return (
         <ImageBackground
             source={require('../assets/owl-5.jpg')}
@@ -34,30 +37,27 @@ const HomeScreen = ({ navigation }) => {
                 </Pressable>
             </View>
 
-
-
             <View style={styles.btnContainer}>
 
                 <Separator />
 
                 <Pressable
                     style={styles.btnPressMe}
-                    onPress={() => navigation.push("Crafts", {type: "Sewing"})}>
+                    onPress={() => navigation.push("Crafts", {type: "Sewing", admin: route.params.admin})}>
                     <Text style={styles.btnText}>SEWING</Text>
                 </Pressable>
 
                 <Separator />
 
-
                 <Pressable
                     style={styles.btnPressMe}
-                    onPress={() => navigation.push("Crafts", {type: "Knitting"})}>
+                    onPress={() => navigation.push("Crafts", {type: "Knitting", admin: route.params.admin})}>
                     <Text style={styles.btnText}>KNITTING</Text>
                 </Pressable>
 
                 <Pressable
                     style={styles.btnPressMe}
-                    onPress={() => navigation.push("Crafts", {type: "Crochet"})}>
+                    onPress={() => navigation.push("Crafts", {type: "Crochet", admin: route.params.admin})}>
                     <Text style={styles.btnText}>CROCHET</Text>
                 </Pressable>
 
@@ -66,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
 
                 <Pressable
                     style={styles.btnPressMe}
-                    onPress={() => navigation.push("Crafts", {type: "Embroidery"})}>
+                    onPress={() => navigation.push("Crafts", {type: "Embroidery", admin: route.params.admin})}>
                     <Text style={styles.btnText}>EMBROIDERY</Text>
                 </Pressable>
 
@@ -74,18 +74,19 @@ const HomeScreen = ({ navigation }) => {
 
                 <Pressable
                     style={styles.btnPressMe}
-                    onPress={() => navigation.push("Crafts", {type: "Felting"})}>
+                    onPress={() => navigation.push("Crafts", {type: "Felting", admin: route.params.admin})}>
                     <Text style={styles.btnText}>FELTING</Text>
                 </Pressable>
 
 
                 <Separator />
 
+                {route.params.admin === true ? 
                 <Pressable
                     style={[styles.btnPressMe,]}
-                    onPress={() => navigation.push("AddNewCraft")}>
+                    onPress={() => navigation.push("AddNewCraft", {admin: route.params.admin})}>
                     <Text style={[styles.btnText, { color: "#daa520" }]}> ADD NEW</Text>
-                </Pressable>
+                </Pressable>: null}
             </View>
 
 

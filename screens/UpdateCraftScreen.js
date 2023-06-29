@@ -35,17 +35,21 @@ const Separator = () => <View style={styles.separator} />;
 const UpdateCraftScreen = ({ navigation, route }) => {
 
     let craftToUpdate = route.params.craft;
-    console.log("Craft to update in UpdateCraftScreen");
-    console.log(craftToUpdate);
+    //console.log("Craft to update in UpdateCraftScreen");
+    //console.log(craftToUpdate);
+
+    let admin = route.params.admin;
+    console.log("Route admin in UpdateCraftScreen");
+    console.log(route.params.admin);
 
 
     const isDarkMode = useColorScheme() === 'dark';
 
     const handleFormSubmit = (form) => {
 
-        console.log("Inside handleFormSubmit function in update screen");
-        console.log("Form inside handleFormSubmit function in update screen");
-        console.log(form);
+        //console.log("Inside handleFormSubmit function in update screen");
+        //console.log("Form inside handleFormSubmit function in update screen");
+        //console.log(form);
 
         const updateItem = async (form) => {
 
@@ -61,18 +65,18 @@ const UpdateCraftScreen = ({ navigation, route }) => {
                 image: form.image,
             }
 
-            console.log(updatedItem);
+            //console.log(updatedItem);
             const URL = API_URL;
             let url = URL + "/" + form._id
-            console.log("url:");
-            console.log(url);
+            //console.log("url:");
+            //console.log(url);
             let resp = await axios.patch(url, updatedItem)
                 .then(resp = await axios.get(URL))
                 .catch((error) => console.log('Error: ', error));
         }
 
         updateItem(form);
-        navigation.navigate("Crafts", { type: form.type })
+        navigation.navigate("Crafts", { type: form.type, admin : admin})
 
     }
 
@@ -96,7 +100,7 @@ const UpdateCraftScreen = ({ navigation, route }) => {
             <View style={styles.btnContainer}>
                 <Pressable
                     style={styles.btnPressMe}
-                    onPress={() => navigation.navigate("Crafts", {type: craftToUpdate.craft.type})}>
+                    onPress={() => navigation.navigate("Crafts", {type: craftToUpdate.craft.type, admin : admin})}>
                     <Text style={styles.btnText}>Back</Text>
                 </Pressable>
             </View>
@@ -106,10 +110,12 @@ const UpdateCraftScreen = ({ navigation, route }) => {
 
 const windowWidth = Dimensions.get('window').width;
 
+//-------------- Styles-----------------------------
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         margin: 0,
+        backgroundColor: "rgba(176, 165, 153, 1)",
     },
 
     btnContainer: {
@@ -117,6 +123,8 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(108, 56, 32, 0.83)",
         alignItems: 'flex-end',
         justifyContent: 'center',
+        borderTopLeftRadius: 500,
+        borderTopRightRadius: 200,
     },
 
     titleContainer: {
@@ -124,11 +132,13 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         backgroundColor: "rgba(89, 31, 5, 0.83)",
+        borderBottomRightRadius: 500,
+        borderBottomLeftRadius: 200,
     },
 
     miniContainer: {
-        borderColor: "black",
-        borderWidth: 1,
+        //borderColor: "black",
+        //borderWidth: 1,
         flex: 0.8,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',

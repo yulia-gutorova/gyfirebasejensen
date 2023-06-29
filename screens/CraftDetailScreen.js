@@ -8,7 +8,8 @@ import {
     ImageBackground,
     Pressable,
     FlatList,
-    Image
+    Image, 
+    Alert
 } from "react-native";
 import axios from "axios";
 
@@ -23,8 +24,12 @@ const CraftDetailScreen = ({ navigation, route }) => {
     const [showImage, setShowImage] = useState(false);
     const isFocused = useIsFocused();
 
+    console.log("Route admin in CraftDetailScreen");
+    console.log(route.params.admin);
+
     //let type = route.params.craft.item.type;
     let craft = route.params.craft.item;
+    let admin = route.params.admin;
 
     useFocusEffect(
         useCallback((type) => {
@@ -38,7 +43,6 @@ const CraftDetailScreen = ({ navigation, route }) => {
 
     //---------------------------------------------------------
     const handleDeleteCraft = (id) => {
-        console.log(id);
 
         //---------------------------------------------------------
         const deleteCraft = async () => {
@@ -49,17 +53,25 @@ const CraftDetailScreen = ({ navigation, route }) => {
                 .catch((error) => console.log('Error: ', error));
         };
 
-        deleteCraft(id);
-
-        navigation.navigate("Crafts", { type: route.params.craft.item.type});
-
+        Alert.alert
+        (
+            'Do you really want to delete this craft?',
+            '',
+            [
+                {text: 'Yes', onPress: () => {  deleteCraft(id); 
+                                                navigation.navigate("Crafts", { type: route.params.craft.item.type, admin : admin})}},
+                {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
+            ],
+            {cancelable: false},
+            //clicking out side of alert will not cancel
+          );
     }
 
     //---------------------------------------------------------
     const handleMarkCraftSold = (id, name) => {
-        console.log("Inside handleMarkCraftSold");
-        console.log(id);
-        console.log(name);
+        //console.log("Inside handleMarkCraftSold");
+        //console.log(id);
+        //console.log(name);
         //---------------------------------------------------------
         const updateCraft = async () => {
 
@@ -76,14 +88,15 @@ const CraftDetailScreen = ({ navigation, route }) => {
         };
 
         updateCraft();
-        navigation.navigate("Crafts", { type: route.params.craft.item.type })
+        navigation.navigate("Crafts", { type: route.params.craft.item.type, admin: admin})
     }
 
     const ability = route.params.craft.item.status ? "Available" : "Unavailable"
 
+    //=====================================================
     return (
         <>
-            {route.params.craft.item.imageObject.imageUrl !== "" ? <ImageBackground style={styles.container} source={{ uri: `${route.params.craft.item.imageObject.imageUrl}` }}>
+            {route.params.craft.item.imageObject.imageUrl !== "" ? <ImageBackground style={styles.container} source={{ uri: `${route.params.craft.item.imageObject.imageUrl}`}}>
 
                 <View style={styles.titleContainer}>
                     <Pressable
@@ -102,12 +115,12 @@ const CraftDetailScreen = ({ navigation, route }) => {
                         <Text style={styles.detailText}>Materials: {route.params.craft.item.materials}</Text>
                         <Text style={styles.detailText}>Size:  {route.params.craft.item.size}</Text>
                         <Text style={styles.detailText}>Price:  {route.params.craft.item.price}</Text>
-                        <Text style={[styles.detailText, { color: route.params.craft.item.status ? "green" : "red" }, { fontSize: 24 }]}>{ability}</Text>
+                        <Text style={[styles.detailText, { color: route.params.craft.item.status ? "darkgreen" : "red" }, { fontSize: 24 }]}>{ability}</Text>
 
                         <View style={styles.buttonsDetailContainer}>
                             <Pressable
                                 style={styles.btnDetailContainer}
-                                onPress={() => navigation.navigate("Update", { craft: { craft } })}>
+                                onPress={() => navigation.navigate("Update", { craft: { craft }, admin : admin})}>
                                 <Text style={[styles.btnText, { color: "white" }]}>Update </Text>
                             </Pressable>
                             <Pressable
@@ -128,7 +141,7 @@ const CraftDetailScreen = ({ navigation, route }) => {
                 <View style={styles.btnContainer}>
                     <Pressable
                         style={styles.btnBack}
-                        onPress={() => navigation.push("Crafts", { type: route.params.craft.item.type })}>
+                        onPress={() => navigation.push("Crafts", { type: route.params.craft.item.type, admin: admin})}>
                         <Text style={styles.btnText}>Back</Text>
                     </Pressable>
                 </View>
@@ -150,7 +163,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: "white",
-
+        width: "100%", 
+        height:'100%',
+        resizeMode: 'cover'
     },
 
     //-------------------------------------------------------------

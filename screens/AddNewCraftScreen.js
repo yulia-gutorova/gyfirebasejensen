@@ -6,6 +6,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
+
 import {
     Button,
     Dimensions,
@@ -32,16 +34,21 @@ import { configDotenv } from 'dotenv';
 
 const Separator = () => <View style={styles.separator} />;
 
-const AddNewCraftScreen = ({ navigation }) => {
+const AddNewCraftScreen = ({ navigation, route }) => {
 
     //const [images, setImages] = useState([]);
     const isDarkMode = useColorScheme() === 'dark';
 
+    let admin  = route.params.admin;
+
+    console.log("Route admin in AddNewCraftScreen");
+    console.log(route.params.admin);
+
     const handleFormSubmit = (form) => {
 
-        console.log("Inside handleFormSubmit function in AddNewCraftScreen");
-        console.log("Form inside handleFormSubmit function");
-        console.log(form);
+        //console.log("Inside handleFormSubmit function in AddNewCraftScreen");
+        //console.log("Form inside handleFormSubmit function");
+        //console.log(form);
 
         const createItem = async (form) => {
 
@@ -54,12 +61,11 @@ const AddNewCraftScreen = ({ navigation }) => {
                 size: form.size,
                 price: form.price,
                 imageObject: form.imageObject,
-                image: form.image,
-                
+                image: form.image,   
             }
 
-            console.log("NewItem inside createItem function");
-            console.log(newItem);
+            //console.log("NewItem inside createItem function");
+            //console.log(newItem);
 
             const URL = API_URL;
             //console.log("URL:");
@@ -70,7 +76,7 @@ const AddNewCraftScreen = ({ navigation }) => {
         }
 
         createItem(form);
-        navigation.navigate("Crafts", { type: form.type })
+        navigation.navigate("Crafts", { type: form.type, admin: admin })
 
     }
 
@@ -94,8 +100,8 @@ const AddNewCraftScreen = ({ navigation }) => {
             <View style={styles.btnContainer}>
                 <Pressable
                     style={styles.btnPressMe}
-                    onPress={() => navigation.push("Home")}>
-                    <Text style={styles.btnText}>Go Back</Text>
+                    onPress={() => navigation.push("Home", {admin: admin})}>
+                    <Text style={styles.btnText}>Back</Text>
                 </Pressable>
             </View>
         </KeyboardAvoidingView>
@@ -104,10 +110,12 @@ const AddNewCraftScreen = ({ navigation }) => {
 
 const windowWidth = Dimensions.get('window').width;
 
+//-------------- Styles-----------------------------
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         margin: 0,
+        backgroundColor: "rgba(176, 165, 153, 1)",
     },
 
     btnContainer: {
@@ -115,6 +123,8 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(108, 56, 32, 0.83)",
         alignItems: 'flex-end',
         justifyContent: 'center',
+        borderTopLeftRadius: 500,
+        borderTopRightRadius: 200,
     },
 
     titleContainer: {
@@ -122,11 +132,13 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         backgroundColor: "rgba(89, 31, 5, 0.83)",
+        borderBottomRightRadius: 500,
+        borderBottomLeftRadius: 200,
     },
 
     miniContainer: {
-        borderColor: "black",
-        borderWidth: 1,
+        //borderColor: "black",
+        //borderWidth: 1,
         flex: 0.8,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',

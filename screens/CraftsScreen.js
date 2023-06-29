@@ -13,6 +13,7 @@ import {
 } from "react-native";
 
 import OneItem from '../components/OneItem';
+import { API_URL } from "@env"
 
 import axios from 'axios';
 
@@ -20,9 +21,18 @@ import axios from 'axios';
 const CraftsScreen = ({ navigation, route }) => {
 
     let type = route.params.type;
+    let admin = route.params.admin;
     const [crafts, setCrafts] = useState([]);
-    //const [typeCtafts, setTypeCrafts] = useState ("");
+
+    const [addNewCraft, setAddNewCrafts] = useState(false);
+
+    
+
+    console.log("route.params.admin in CraftScreen");
+    console.log(route.params.admin + "");
+
     const isFocused = useIsFocused();
+
 
     //-----------------------------------------------------
     //useFocusEffect to get all recipes when navigating 
@@ -31,15 +41,15 @@ const CraftsScreen = ({ navigation, route }) => {
     useFocusEffect(
 
         useCallback((type) => {
-            console.log("inside useFocusEffect");
-            console.log("Type outside");
-            console.log(type);
+            //console.log("inside useFocusEffect");
+            //console.log("Type outside");
+            //console.log(type);
             const getAllCrafts = async (type) => {
-                console.log("In get all crafts function");
-                const resp = await axios.get('https://hobby-app-server-production.up.railway.app/crafts')
+                //console.log("In get all crafts function");
+                const resp = await axios.get(API_URL)
                     .then(resp => {
-                        console.log("Responce");
-                        console.log(resp.data);
+                        //console.log("Responce");
+                        //console.log(resp.data);
                         setCrafts(resp.data);
                     })
                     .catch((error) => console.log('Error: ', error));
@@ -57,11 +67,11 @@ const CraftsScreen = ({ navigation, route }) => {
     { 
         const getAllCrafts = async (type) => 
         {
-            console.log("inside useEffect");
-            const resp = await axios.get('https://hobby-app-server-production.up.railway.app/crafts')
+           // console.log("inside useEffect");
+            const resp = await axios.get(API_URL)
             .then(resp => {
-                console.log("Responce");
-                console.log(resp.data);
+                //console.log("Responce");
+                //console.log(resp.data);
                 setCrafts(resp.data);
             })
             .catch((error) => console.log('Error: ', error));
@@ -91,15 +101,15 @@ const CraftsScreen = ({ navigation, route }) => {
                 {typeCrafts.length === 0 ? <Text style={styles.text}>You still don't have any crafts here.</Text> : null}
                 <FlatList
                     style={styles.flatlist}
-                    key={type}
+                    key={route.params._id}
                     keyExtractor={item => item.id}
                     data={typeCrafts}
                     showsVerticalScrollIndicator
                     renderItem={({ item }) => {
                         return (
                         <>
-                            <Pressable onPress={() => navigation.navigate("CraftDetail", { title: item.name, craft: { item } })}>
-                                <OneItem key={item.id} title={item.name} craft={{ item }} />
+                            <Pressable key={route.params._id}  onPress={() => navigation.navigate("CraftDetail", { title: item.name, craft: { item }, admin: admin })}>
+                                <OneItem key={item._id} title={item.name} craft={{ item }} />
                             </Pressable>
                         </>
                         )}}
@@ -109,7 +119,7 @@ const CraftsScreen = ({ navigation, route }) => {
             <View style={styles.btnContainer}>
                 <Pressable
                     style={styles.btnPressMe}
-                    onPress={() => navigation.push("Home")}>
+                    onPress={() => navigation.push("Home", {admin : admin})}>
                     <Text style={styles.btnText}>Home</Text>
                 </Pressable>
             </View>
@@ -127,6 +137,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "rgba(237, 230, 224, 0.83)",
         width: "100%",
+        backgroundColor: "rgba(0, 0, 0, 0.62)"
     },
 
     btnContainer: {
@@ -134,7 +145,9 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: "rgba(108, 56, 32, 0.83)",
         alignItems: 'flex-end',
-        justifyContent: 'center',
+        justifyContent: 'center',        
+        borderTopLeftRadius: 500,
+        borderTopRightRadius: 200,
     },
 
     titleContainer: {
@@ -144,11 +157,13 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         paddingTop: 0,
         backgroundColor: "rgba(89, 31, 5, 0.83)",
+        borderBottomRightRadius: 500,
+        borderBottomLeftRadius: 200,
     },
 
     flatlistContainer: {
         flex: 0.8,
-        backgroundColor: "rgba(0, 0, 0, 0.62)",
+        //backgroundColor: "rgba(0, 0, 0, 0.62)",
         width: "100%",
         alignItems: 'center',
         justifyContent: 'center',
