@@ -4,12 +4,12 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import {
     View,
+    SafeAreaView,
     Text,
     StyleSheet,
     ImageBackground,
     Pressable,
     FlatList,
-    Image
 } from "react-native";
 
 import OneItem from '../components/OneItem';
@@ -36,15 +36,9 @@ const CraftsScreen = ({ navigation, route }) => {
     useFocusEffect(
 
         useCallback((type) => {
-            console.log("inside useFocusEffect");
-            //console.log("Type outside");
-            //console.log(type);
             const getAllCrafts = async (type) => {
-                //console.log("In get all crafts function");
                 const resp = await axios.get(API_URL)
                     .then(resp => {
-                        //console.log("Responce");
-                        //console.log(resp.data);
                         setCrafts(resp.data);
                     })
                     .catch((error) => console.log('Error: ', error));
@@ -61,7 +55,6 @@ const CraftsScreen = ({ navigation, route }) => {
     { 
         const getAllCrafts = async (type) => 
         {
-           // console.log("inside useEffect");
             const resp = await axios.get(API_URL)
             .then(resp => {
                 setCrafts(resp.data);
@@ -72,15 +65,14 @@ const CraftsScreen = ({ navigation, route }) => {
 
     }, []);
 
-    console.log("Crafts outside");
-    console.log(crafts);
-
     let typeCrafts = crafts.filter(item => item.type === type);
+    console.log("TypeCrafts");
+    console.log(typeCrafts);
 
 
     //=====================================================
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
 
             <View style={styles.titleContainer}>
                 <Text style={styles.text}>{type}</Text>
@@ -113,7 +105,7 @@ const CraftsScreen = ({ navigation, route }) => {
                 </Pressable>
             </View>
 
-        </View>
+        </SafeAreaView>
     )
 }
 

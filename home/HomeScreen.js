@@ -5,92 +5,89 @@ import {
     Text,
     StyleSheet,
     ImageBackground,
-    Pressable,
-} from "react-native";
+    Pressable} from "react-native";
 
 const Separator = () => <View style={styles.separator} />;
 
 const HomeScreen = ({ navigation, route }) => {
 
-    console.log("Route admin in HomeScreen");
-    console.log(route.params.admin);
-
     //=====================================================
     return (
-        <ImageBackground
-            source={require('../assets/owl-5.jpg')}
-            style={styles.container} >
+            <ImageBackground
+                source={require('../assets/owl-5.jpg')}
+                style={styles.container} >
 
-            <View style={[styles.miniContainer, {transform: [{ skewX: '40deg' }, { skewY: '30deg' }]},]}>
-                <Text style={styles.text}>Crazy Owl </Text>
-                <Text style={styles.text}>presents to you</Text>
-                <Text style={styles.text}>her crazy world</Text>
-                <Text style={styles.text}></Text>
+                <View style={[styles.miniContainer, { transform: [{ skewX: '40deg' }, { skewY: '30deg' }] },]}>
+                    <Text style={styles.text}>Crazy Owl </Text>
+                    <Text style={styles.text}>presents to you</Text>
+                    <Text style={styles.text}>her crazy world</Text>
+                    <Text style={styles.text}></Text>
 
-            </View>
+                </View>
 
-            <View>
-                <Pressable
-                    style={styles.btnLogOut}
-                    onPress={() => navigation.push("Login")}>
-                    <Text style={styles.btnLogOutText}>LOG OUT</Text>
-                </Pressable>
-            </View>
+                <View>
+                    <Pressable
+                        style={styles.btnLogOut}
+                        onPress={() => navigation.push("Login")}>
+                        <Text style={styles.btnLogOutText}>LOG OUT</Text>
+                    </Pressable>
+                </View>
 
-            <View style={styles.btnContainer}>
+                <View style={styles.btnContainer}>
 
-                <Separator />
+                    <Separator />
 
-                <Pressable
-                    style={styles.btnPressMe}
-                    onPress={() => navigation.push("Crafts", {type: "Sewing", admin: route.params.admin})}>
-                    <Text style={styles.btnText}>SEWING</Text>
-                </Pressable>
+                    <Pressable
+                        style={styles.btnPressMe}
+                        onPress={() => navigation.push("Crafts", { type: "Sewing", admin: route.params.admin })}>
+                        <Text style={styles.btnText}>SEWING</Text>
+                    </Pressable>
 
-                <Separator />
+                    <Separator />
 
-                <Pressable
-                    style={styles.btnPressMe}
-                    onPress={() => navigation.push("Crafts", {type: "Knitting", admin: route.params.admin})}>
-                    <Text style={styles.btnText}>KNITTING</Text>
-                </Pressable>
+                    <Pressable
+                        style={styles.btnPressMe}
+                        onPress={() => navigation.push("Crafts", { type: "Knitting", admin: route.params.admin })}>
+                        <Text style={styles.btnText}>KNITTING</Text>
+                    </Pressable>
 
-                <Pressable
-                    style={styles.btnPressMe}
-                    onPress={() => navigation.push("Crafts", {type: "Crochet", admin: route.params.admin})}>
-                    <Text style={styles.btnText}>CROCHET</Text>
-                </Pressable>
+                    <Pressable
+                        style={styles.btnPressMe}
+                        onPress={() => navigation.push("Crafts", { type: "Crochet", admin: route.params.admin })}>
+                        <Text style={styles.btnText}>CROCHET</Text>
+                    </Pressable>
 
-                <Separator />
-
-
-                <Pressable
-                    style={styles.btnPressMe}
-                    onPress={() => navigation.push("Crafts", {type: "Embroidery", admin: route.params.admin})}>
-                    <Text style={styles.btnText}>EMBROIDERY</Text>
-                </Pressable>
-
-                <Separator />
-
-                <Pressable
-                    style={styles.btnPressMe}
-                    onPress={() => navigation.push("Crafts", {type: "Felting", admin: route.params.admin})}>
-                    <Text style={styles.btnText}>FELTING</Text>
-                </Pressable>
+                    <Separator />
 
 
-                <Separator />
+                    <Pressable
+                        style={styles.btnPressMe}
+                        onPress={() => navigation.push("Crafts", { type: "Embroidery", admin: route.params.admin })}>
+                        <Text style={styles.btnText}>EMBROIDERY</Text>
+                    </Pressable>
 
-                {route.params.admin === true ? 
-                <Pressable
-                    style={[styles.btnPressMe,]}
-                    onPress={() => navigation.push("AddNewCraft", {admin: route.params.admin})}>
-                    <Text style={[styles.btnText, { color: "#daa520" }]}> ADD NEW</Text>
-                </Pressable>: null}
-            </View>
+                    <Separator />
+
+                    <Pressable
+                        style={styles.btnPressMe}
+                        onPress={() => navigation.push("Crafts", { type: "Felting", admin: route.params.admin })}>
+                        <Text style={styles.btnText}>FELTING</Text>
+                    </Pressable>
 
 
-        </ImageBackground>
+                    <Separator />
+
+                    {route.params.admin === true ?
+                        <Pressable
+                            style={[styles.btnPressMe,]}
+                            onPress={() => navigation.push("AddNewCraft", { admin: route.params.admin })}>
+                            <Text style={[styles.btnText, { color: "#daa520" }]}> ADD NEW</Text>
+                        </Pressable> : null}
+                </View>
+
+
+            </ImageBackground>
+
     )
 }
 

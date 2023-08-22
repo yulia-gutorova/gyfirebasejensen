@@ -36,9 +36,6 @@ const UpdateCraftScreen = ({ navigation, route }) => {
 
     let craftToUpdate = route.params.craft;
     let admin = route.params.admin;
-    console.log("Route admin in UpdateCraftScreen");
-    console.log(route.params.admin);
-
 
     const isDarkMode = useColorScheme() === 'dark';
 
@@ -49,7 +46,7 @@ const UpdateCraftScreen = ({ navigation, route }) => {
         //API PATCH to update craft
         //---------------------------------------------------------
         const updateItem = async (form) => {
-
+    
             let updatedItem =
             {
                 type: form.type,
@@ -68,10 +65,8 @@ const UpdateCraftScreen = ({ navigation, route }) => {
                 .catch((error) => console.log('Error: ', error));
         }
         //---------------------------------------------------------
-
         updateItem(form);
         navigation.navigate("Crafts", { type: form.type, admin : admin})
-
     }
 
 

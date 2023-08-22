@@ -1,6 +1,6 @@
 /**
  * Sample React Native App
- * https://github.com/facebook/react-native
+ * 
  *
  * @format
  */
@@ -27,9 +27,7 @@ import axios from "axios"
 
 import { API_URL } from "@env"
 
-;
 import AddNewCraftForm from '../components/AddNewCraftForm';
-import { configDotenv } from 'dotenv';
 
 
 const Separator = () => <View style={styles.separator} />;
@@ -39,8 +37,8 @@ const AddNewCraftScreen = ({ navigation, route }) => {
     //const [images, setImages] = useState([]);
     const isDarkMode = useColorScheme() === 'dark';
 
-    let admin  = route.params.admin;
-    
+    let admin = route.params.admin;
+
     //---------------------------------------------------------
     const handleFormSubmit = (form) => {
 
@@ -58,13 +56,14 @@ const AddNewCraftScreen = ({ navigation, route }) => {
                 size: form.size,
                 price: form.price,
                 imageObject: form.imageObject,
-                image: form.image,   
+                image: form.image,
             }
 
             let resp = await axios.post(API_URL, newItem)
                 .then(resp = await axios.get(API_URL))
                 .catch((error) => console.log('Error: ', error));
         }
+        //---------------------------------------------------------
 
         createItem(form);
         navigation.navigate("Crafts", { type: form.type, admin: admin })
@@ -91,7 +90,7 @@ const AddNewCraftScreen = ({ navigation, route }) => {
             <View style={styles.btnContainer}>
                 <Pressable
                     style={styles.btnPressMe}
-                    onPress={() => navigation.push("Home", {admin: admin})}>
+                    onPress={() => navigation.push("Home", { admin: admin })}>
                     <Text style={styles.btnText}>Back</Text>
                 </Pressable>
             </View>

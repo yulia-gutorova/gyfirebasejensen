@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
     View,
+    SafeAreaView,
     Text,
     StyleSheet,
     Pressable,
@@ -20,7 +21,6 @@ const LoginScreen = ({ navigation }) => {
 
 
     const passwordHanler = () => {
-        //console.log(password);
 
         if (password !== "admin"){
             setWrongPassword(true); 
@@ -37,7 +37,7 @@ const LoginScreen = ({ navigation }) => {
     return (
         <ImageBackground style={styles.container} source={require('../assets/owl-login.jpg')}>
 
-            <View style={styles.insideContainer}>
+            <SafeAreaView style={styles.insideContainer}>
 
                 {!loginWithPassword ?
                     <View style={styles.btnContainer}>
@@ -62,11 +62,12 @@ const LoginScreen = ({ navigation }) => {
                         <View>
                             <TextInput
                                 style={styles.textInput}
-                                placeholderTextColor="#003f5c"
+                                autoFocus={true}
+                                selectionColor={'white'}
                                 secureTextEntry={true}
                                 onChangeText={(password) => setPassword(password)}
                             />
-                            {(password !== "admin" && attempt !== false) ? <Text style={styles.messageText}>Invalid password! Try again.</Text> : null}
+                            {(password !== "admin" && attempt !== false) ? <Text style={styles.messageText}>Invalid password!</Text> : null}
 
                         </View>
 
@@ -75,9 +76,14 @@ const LoginScreen = ({ navigation }) => {
                             onPress={passwordHanler}>
                             <Text style={styles.btnText}>Log in</Text>
                         </Pressable>
+                        <Pressable
+                            style={[styles.btnLogIn, { marginRight: 0 }]}
+                            onPress={() => setLoginWithPassword(false)}>
+                            <Text style={styles.btnText}>Back</Text>
+                        </Pressable>
                     </View> : null}
 
-            </View>
+            </SafeAreaView>
 
 
         </ImageBackground>
@@ -91,13 +97,13 @@ const d = Dimensions.get("window");
 const styles = StyleSheet.create({
 
 
-    container: {
+      container: {
         position: 'absolute',
         left: 0,
         top: 0,
         width: d.width,
         height: d.height,
-    },
+    },  
 
     insideContainer: {
         flex: 1,
@@ -127,22 +133,11 @@ const styles = StyleSheet.create({
         width: "100%",
     },
 
-    /*     inputView: {
-            flex: 1,
-            backgroundColor: "#FFC0CB",
-            borderRadius: 30,
-            width: "70%",
-            height: 45,
-            marginBottom: 20,
-            alignItems: "center",
-        }, */
-
     textInput: {
         marginTop: 35,
         height: 50,
         width: 200,
         padding: 10,
-        //marginLeft: 20,
         backgroundColor: "rgba(23, 0, 0, 0.58)",
         borderWidth: 1,
         borderColor: "#daa520",
@@ -182,7 +177,6 @@ const styles = StyleSheet.create({
         paddingVertical: 3,
         alignItems: 'center',
         justifyContent: 'center',
-        //textAlign: "center",
         borderWidth: 1,
         borderColor: "#daa520",
         borderRadius: 75,
@@ -191,9 +185,8 @@ const styles = StyleSheet.create({
     },
 
     btnLogIn: {
-        backgroundColor: "gray",
-        width: 100,
-        height: 100,
+        width: 70,
+        height: 70,
         paddingHorizontal: 5,
         paddingVertical: 3,
         alignItems: 'center',
@@ -203,7 +196,7 @@ const styles = StyleSheet.create({
         borderColor: "#daa520",
         borderRadius: 75,
         backgroundColor: "rgba(71, 32, 14, 0.83)",
-        margin: 10
+        margin: 25
     },
 
     btnGoBack: {

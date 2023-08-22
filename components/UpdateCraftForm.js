@@ -6,11 +6,12 @@ import {
     TextInput,
     Pressable,
     ScrollView,
-    SafeAreaView,
-    Button,
+    Alert,
     KeyboardAvoidingView,
     Image
 } from "react-native"
+
+import ImageItem from "./ImageItem";
 
 import storage from '@react-native-firebase/storage';
 import * as ImagePicker from 'react-native-image-picker';
@@ -21,11 +22,6 @@ const reference = storage();
 
 //---------------------------------------------------------
 const UpdateCraftForm = ({ onSubmit, craft }) => {
-
-    //console.log("In UpdateCraftForm");
-    //console.log("Craft:");
-    //console.log(craft);
-
 
     const [imageObj, setImageObj] = useState({
         imageName: craft.craft.imageObject.imageName,
@@ -44,13 +40,10 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
         image: craft.craft.image,
     });
 
-    //console.log("Form in UpdateCraftForm");
-    //console.log(form);
-
     const types = ["Sewing", "Knitting", "Crochet", "Embroidery", "Felting"];
 
     const addNewImageHander = async () => {
-        //console.log('Add Image');
+
         await ImagePicker.launchImageLibrary
             (
                 {
@@ -81,22 +74,25 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
                             .then(async result => {
                                 //console.log('added image');
                                 const url = await reference.ref(imagePath).getDownloadURL();
-                                //console.log('Image path:', imagePath);
+                               //console.log('Image path:', imagePath);
                                 //console.log('Image Url is', url);
 
-                                const itemData =
+                                let itemData =
                                 {
                                     imageName: imagePath,
                                     imageUrl: url,
                                 };
+                                //console.log('itamData');
+                               // console.log(itemData);
 
                                 setImageObj(itemData);
 
+                                onChangeImage("imageObject", itemData);
+
                                 setForm({
                                     ...form,
-                                    imageObject: itemData,
                                     image: url
-                                })
+                                }) 
                             });
                     }
                 },
@@ -104,18 +100,17 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
             );
     }
 
-    const ImageItem = ({ item }) => {
+    //---------------------------------------------------------
+/*     const ImageItem = ({ item }) => {
         return (
             <View style={styles.imageContainer}>
-                <Image style={styles.image} source={{ uri: item.imageUrl }} />
+                <Image style={styles.image} source={{ uri: form.image }} />
             </View>
         );
-    };
+    }; */
 
     //---------------------------------------------------------
     const onChangeCustomRadioButton = (name, text) => {
-        //console.log("Form in onChangeradioButton:");
-        //console.log(name, "  ", text);
         setForm({
             ...form,
             [name]: text
@@ -124,16 +119,40 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
 
     //---------------------------------------------------------
     const onChangeText = (name) => (text) => {
-       // console.log("Form in onChangeText");
-        //console.log(name, "  ", text);
         setForm({
             ...form,
             [name]: text
         })
     }
 
-    //console.log("Form in UpdateCraftForm");
-    //console.log(form);
+    //---------------------------------------------------------
+    const onChangeImage = (object, value) => {
+        ({
+            ...form,
+            [object]: value
+        })
+    }
+
+    //---------------------------------------------------------
+    const submitHandler = (form) => {
+
+        console.log("Form in submitHandler");
+        console.log(form);
+
+        if (form.type.trim().length === 0 ||
+        form.name.trim().length === 0 ||
+        form.description.trim().length === 0 ||
+        form.materials.trim().length === 0 ||
+        form.size.trim().length === 0 ||
+        form.price.trim().length === 0 ||
+        form.imageObject.imageName.trim().length === 0 ||
+        form.imageObject.imageUrl.trim().length === 0 ||
+        form.image.trim().length === 0) {
+        Alert.alert('Check that you have filled in all the input fields');
+    }
+
+        else {onSubmit(form)}
+    }
 
 
     //=====================================================
@@ -142,10 +161,6 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
         <View>
 
             <ScrollView style={styles.container}>
-                {/*             <KeyboardAvoidingView
-                            style={{ flex: 1 }}
-                            keyboardVerticalOffset={100}
-                            behavior={"position"}> */}
 
                 <KeyboardAvoidingView behavior={"padding"}>
 
@@ -159,11 +174,11 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
                     <View style={[styles.miniContainer]}>
                         <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Add image: </Text>
                         <View contentInsetAdjustmentBehavior="automatic" style={styles.addImageContainer}>
-                            <ImageItem key={imageObj.imageName} item={imageObj} />
+                            <ImageItem key={form._id} item={form} />
                             <Pressable
                                 style={styles.btnAddImage}
                                 onPress={addNewImageHander}>
-                                <Text style={styles.btnText}>Add Image</Text>
+                                <Text style={styles.btnText}>Change Image</Text>
                             </Pressable>
 
                         </View>
@@ -173,6 +188,7 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Name: </Text>
                     <TextInput
                         style={styles.input}
+                        selectionColor={'black'}
                         onChangeText={onChangeText("name")}
                         value={form.name}
                         text={form.name}
@@ -182,6 +198,7 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Description: </Text>
                     <TextInput
                         multiline={true}
+                        selectionColor={'black'}
                         style={[styles.input, { minHeight: 50 }]}
                         onChangeText={onChangeText("description")}
                         value={form.description}
@@ -191,6 +208,7 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Materials: </Text>
                     <TextInput
                         style={styles.input}
+                        selectionColor={'black'}
                         onChangeText={onChangeText("materials")}
                         value={form.materials}
                     />
@@ -199,6 +217,7 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Size: </Text>
                     <TextInput
                         style={styles.input}
+                        selectionColor={'black'}
                         onChangeText={onChangeText("size")}
                         value={form.size}
                     />
@@ -207,6 +226,7 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Price: </Text>
                     <TextInput
                         style={styles.input}
+                        selectionColor={'black'}
                         onChangeText={onChangeText("price")}
                         value={form.price}
                     />
@@ -215,7 +235,7 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
                     {/* Submit button */}
                     <Pressable
                         style={styles.btnPressMe}
-                        onPress={() => onSubmit(form)}>
+                        onPress={() => submitHandler(form)}>
                         <Text style={styles.btnText}>Submit</Text>
                     </Pressable>
 
@@ -231,19 +251,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        //backgroundColor: "rgba(176, 165, 153, 1)",
         width: 420,
 
     },
 
     miniContainer: {
-        //borderColor: "black",
         borderWidth: 1,
         padding: 20,
         width: 400,
         alignSelf: 'center',
-        //backgroundColor: "gray"
-
     },
 
     imageContainer: {
@@ -251,15 +267,11 @@ const styles = StyleSheet.create({
         //padding: 20,
         //backgroundColor: "green",
         //width: 420,
-
     },
 
     addImageContainer: {
-        //flex: 1,
         margin: 20,
-        //backgroundColor: "rgba(176, 165, 153, 1)",
         width: 420,
-        //justifyContent: 'center',
         alignSelf: 'center',
     },
 

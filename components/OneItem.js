@@ -5,12 +5,12 @@ const OneItem = ({ key ,title, craft}) => {
 
   //=====================================================
   return (
-    <View style={styles.item} key={key}>
+    <View style={styles.item}>
       <View style={{flex: 0.8}}>
         <Text style={styles.title}>{craft.item.name}</Text>
       </View>
       <View>
-        <Image source={{ uri: `${craft.item.imageObject.imageUrl}`}} style={styles.image} />
+        <Image source={{ uri: `${craft.item.image}`}} style={styles.image} />
       </View>
     </View>
   )

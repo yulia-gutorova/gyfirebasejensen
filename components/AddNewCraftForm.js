@@ -9,7 +9,6 @@ import {
     SafeAreaView,
     Button,
     KeyboardAvoidingView,
-    Image,
     Alert
 } from "react-native"
 
@@ -94,14 +93,6 @@ const AddNewCraftForm = ({ onSubmit }) => {
 
     }
 
-    //---------------------------------------------------------
-/*     const ImageItem = ({ item }) => {
-        return (
-            <View style={styles.imageContainer}>
-                <Image style={styles.image} source={{ uri: item.imageUrl }} />
-            </View>
-        );
-    }; */
 
     //---------------------------------------------------------
     const onChangeCustomRadioButton = (name, text) => {
@@ -175,6 +166,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Name: </Text>
                     <TextInput
                         style={styles.input}
+                        selectionColor={'black'}
                         onChangeText={onChangeText("name")}
                         value={form.name}
                     />
@@ -183,7 +175,8 @@ const AddNewCraftForm = ({ onSubmit }) => {
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Description: </Text>
                     <TextInput
                         multiline={true}
-                        style={[styles.input, { minHeight: 50 }]}
+                        selectionColor={'black'}
+                        style={[styles.input, { minHeight: 50, textAlignVertical: "top"  }]}
                         onChangeText={onChangeText("description")}
                         value={form.description}
                     />
@@ -192,6 +185,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Materials: </Text>
                     <TextInput
                         style={styles.input}
+                        selectionColor={'black'}
                         onChangeText={onChangeText("materials")}
                         value={form.materials}
                     />
@@ -200,6 +194,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Size: </Text>
                     <TextInput
                         style={styles.input}
+                        selectionColor={'black'}
                         onChangeText={onChangeText("size")}
                         value={form.size}
                     />
@@ -208,6 +203,7 @@ const AddNewCraftForm = ({ onSubmit }) => {
                     <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Price: </Text>
                     <TextInput
                         style={styles.input}
+                        selectionColor={'black'}
                         onChangeText={onChangeText("price")}
                         value={form.price}
                     />
@@ -248,13 +244,6 @@ const styles = StyleSheet.create({
 
     },
 
-/*     imageContainer: {
-        //flex: 1,
-        //padding: 20,
-        //backgroundColor: "green",
-        //width: 420,
-    }, */
-
     addImageContainer: {
         margin: 20,
         width: 420,
@@ -277,12 +266,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
 
-/*     image: {
-        width: '40%',
-        height: 200,
-        alignSelf: "center",
-        margin: 10
-    }, */
 
     btnAddImage: {
         backgroundColor: 'brown',

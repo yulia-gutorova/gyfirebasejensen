@@ -7,10 +7,9 @@ import {
     StyleSheet,
     ImageBackground,
     Pressable,
-    FlatList,
-    Image, 
     Alert
 } from "react-native";
+
 import axios from "axios";
 
 import { API_URL } from "@env"
@@ -72,9 +71,7 @@ const CraftDetailScreen = ({ navigation, route }) => {
 
     //---------------------------------------------------------
     const handleMarkCraftSold = (id, name) => {
-        //console.log("Inside handleMarkCraftSold");
-        //console.log(id);
-        //console.log(name);
+
         //---------------------------------------------------------
         // API PATCH to update craft
         //---------------------------------------------------------
@@ -99,8 +96,8 @@ const CraftDetailScreen = ({ navigation, route }) => {
     //=====================================================
     return (
         <>
-            {route.params.craft.item.imageObject.imageUrl !== "" ? 
-            <ImageBackground style={styles.container} source={{ uri: `${route.params.craft.item.imageObject.imageUrl}`}}>
+            {route.params.craft.item.image!== "" ? 
+            <ImageBackground style={styles.container} source={{ uri: `${route.params.craft.item.image}`}}>
 
                 <View style={styles.titleContainer}>
                     <Pressable
