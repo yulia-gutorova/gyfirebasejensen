@@ -11,7 +11,7 @@ import {
     Image
 } from "react-native"
 
-import ImageItem from "./ImageItem";
+//import ImageItem from "./ImageItem";
 
 import storage from '@react-native-firebase/storage';
 import * as ImagePicker from 'react-native-image-picker';
@@ -101,13 +101,13 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
     }
 
     //---------------------------------------------------------
-/*     const ImageItem = ({ item }) => {
+    const ImageItem = ({ item }) => {
         return (
             <View style={styles.imageContainer}>
                 <Image style={styles.image} source={{ uri: form.image }} />
             </View>
         );
-    }; */
+    }; 
 
     //---------------------------------------------------------
     const onChangeCustomRadioButton = (name, text) => {
@@ -172,7 +172,7 @@ const UpdateCraftForm = ({ onSubmit, craft }) => {
 
                     {/* Change Image */}
                     <View style={[styles.miniContainer]}>
-                        <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Add image: </Text>
+                        <Text style={{ fontWeight: "bold", marginLeft: 10 }}>Change image: </Text>
                         <View contentInsetAdjustmentBehavior="automatic" style={styles.addImageContainer}>
                             <ImageItem key={form._id} item={form} />
                             <Pressable

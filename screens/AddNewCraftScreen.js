@@ -66,8 +66,8 @@ const AddNewCraftScreen = ({ navigation, route }) => {
         //---------------------------------------------------------
 
         createItem(form);
-        navigation.navigate("Crafts", { type: form.type, admin: admin })
-
+        //navigation.navigate("Crafts", { type: form.type, admin: admin })
+        navigation.navigate("Home", { admin: admin })
     }
 
 

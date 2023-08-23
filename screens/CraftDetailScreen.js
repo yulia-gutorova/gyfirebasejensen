@@ -72,16 +72,18 @@ const CraftDetailScreen = ({ navigation, route }) => {
     //---------------------------------------------------------
     const handleMarkCraftSold = (id, name) => {
 
+        let updatedCraft = {
+            name: name,
+            status: false
+        }
+
         //---------------------------------------------------------
         // API PATCH to update craft
         //---------------------------------------------------------
-            const updateCraft = async () => {
 
-                let updatedCraft = {
-                    name: name,
-                    status: false
-                }
+            const updateCraft = async () => {
                 let url = API_URL + "/" + id;
+                
                 let resp = await axios.patch(url, updatedCraft)
                     .then(resp = await axios.get(API_URL))
                     .catch((error) => console.log('Error: ', error));
@@ -89,6 +91,7 @@ const CraftDetailScreen = ({ navigation, route }) => {
         //---------------------------------------------------------
 
         updateCraft();
+        
         navigation.navigate("Crafts", { type: route.params.craft.item.type, admin: admin})
     }
 
